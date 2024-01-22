@@ -1,5 +1,5 @@
-const FHIR_BASE = 'http://localhost:8088/r5/fhir';
-const API_HOST = 'http://localhost:8088/r5';
+const FHIR_BASE = 'https://fhir.tcumi.com:58443/hapi66/fhir';
+const API_HOST = 'https://fhir.tcumi.com:58443/hapi66';
 const API_HEADERS = {
     'Content-Type': 'application/json',
     'Authorization' : ''
