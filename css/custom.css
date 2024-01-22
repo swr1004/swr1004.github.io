@@ -1,0 +1,146 @@
+.container {
+	max-width: 100%;
+	width: 100%;
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+	.container {
+		max-width: 95vw;
+	}
+}
+
+@media (min-width: 1200px) {
+	.container {
+		max-width: 1024px;
+	}
+}
+
+@media (min-width: 1500px) {
+	.container {
+		max-width: 1200px;
+	}
+}
+
+.container-header {
+	display: flex;
+	padding: 10px 0;
+}
+
+.header-left {
+	display: flex;
+}
+
+.header-right {
+	display: flex;
+	flex-grow: 1;
+	justify-content: flex-end;
+	line-height: 50px;
+}
+
+.header-right li {
+	list-style: none;
+	text-align: end;
+	font-size: 16px;
+}
+
+.header-right li a {
+	display: inline-block;
+	padding: 0 10px;
+	text-decoration: underline;
+	color: black;
+}
+
+.container-header .logo {
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+}
+
+.container-header .title {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 50px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+	.container-header {
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
+		padding: 10px;
+	}
+	.container-header .title {
+		font-size: 16px;
+	}
+
+	.header-right {
+		display: none;
+	}
+}
+
+/* container-main */
+.container-main {
+	padding: 30px 0;
+}
+
+@media screen and (max-width: 768px) {
+	.container-main {
+		padding: 15px;
+	}
+}
+
+.card {
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	background-color: #fff;
+}
+
+.input-group {
+	margin-bottom: 20px;
+}
+
+.btn-main {
+	max-width: 150px;
+	width: 100%;
+	background-color: rgba(73, 140, 240, 0.85);
+	color: white;
+	padding: 8px 15px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	border: none;
+	border-radius: 30px;
+	cursor: pointer;
+	font-size: 16px;
+	text-align: center;
+	max-height: 40px;
+}
+
+.btn-main.small {
+	/*padding: 5px 10px;*/
+	font-size: 14px;
+	max-width: 80px;
+}
+
+.btn-main:hover {
+	background-color: rgba(73, 140, 240, 1);
+}
+
+.btn-main:disabled {
+	background-color: rgba(73, 140, 240, 0.5);
+}
+
+.form-control {
+	margin: 5px 0;
+	padding: 10px;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	height: 40px;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin: 15px 0;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠系統</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 30%;
+            max-width: 120px;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="text-center">
+            <img src="/img/logo.png" alt="logo" class="logo">
+        </div>
+        <h1 class="mt-20 text-center">睡眠系統</h1>
+        <div class="card">
+            <div class="input-group">
+                <span>醫事證號</span>
+                <input type="text" class="form-control" id="id" name="id" placeholder="請輸入醫事證號" value="926">
+            </div>
+            <div class="input-group">
+                <span>身分證字號</span>
+                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入身分證字號"
+                    value="Y120168192">
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn-main" onclick="login();">登入</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const id = localStorage.getItem('login-id');
+                const practitioner = JSON.parse(localStorage.getItem('practitioner'));
+                const role = localStorage.getItem('login-role');
+                if (id && practitioner && role == 'practitioner') {
+                    window.location.href = '/waiting.html';
+                }
+            } catch (e) { }
+        });
+
+        const login = async () => {
+            const id = document.getElementById('id').value;
+            const identifier = document.getElementById('identifier').value;
+
+            if (id == '' || identifier == '') {
+                alert('請輸入醫事證號及身分證字號');
+                return;
+            }
+
+            const response = await getPractitionerById(id, identifier);
+            if (!response.success || !response.data) {
+                alert("登入失敗");
+                return;
+            }
+
+            let resource = response.data;
+            let name = resource.name.length > 0 ? resource.name[0].text : null;
+
+            if (!name) {
+                alert("取得資料時發生錯誤");
+                return;
+            }
+
+            const practitioner = {
+                id: resource.id,
+                name: name,
+                identifier: resource.identifier[0].value
+            };
+
+            localStorage.setItem('practitioner', JSON.stringify(practitioner));
+            localStorage.setItem('login-role', 'practitioner');
+            localStorage.setItem('login-id', practitioner.id);
+
+            alert('登入成功！');
+            window.location.href = '/waiting.html';
+        }
+    </script>
+</body>
+
+</html>

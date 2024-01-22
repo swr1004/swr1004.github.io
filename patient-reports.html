@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠系統</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        @media screen and (max-width: 768px) {
+            .input-item {
+                margin-left: 0 !important;
+            }
+
+            .input-search {
+                width: 100% !important;
+                margin-left: 0 !important;
+                margin-top: -15px;
+            }
+
+            .input-search button {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/patient-login.html">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">睡眠系統</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <span id="patient-name"></span>
+                </li>
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <div class="mt-20 flex">
+                <div class="input-item d-none">
+                    <div class="fs-14">身分證</div>
+                    <input id="input-patient-identifier" type="text" class="form-control" placeholder="請輸入姓名/身分證"
+                        style="width: 200px;" value="" disabled>
+                </div>
+                <div class="ml-15 input-item">
+                    <div class="fs-14">日期</div>
+                    <div class="flex">
+                        <input id="start-date" type="date" class="form-control" style="width: 150px;"
+                            value="2023-12-01">
+                        <div class="ml-10 mr-10" style="line-height: 50px;">~</div>
+                        <input id="end-date" type="date" class="form-control" style="width: 150px;" value="2023-12-31">
+                    </div>
+                </div>
+                <div class="ml-15 input-item">
+                    <div class="fs-14">院所</div>
+                    <select class="form-control" style="width: 200px;">
+                        <option value="all">全部</option>
+                        <option value="Org-1145010010">佛教慈濟醫療財團法人花蓮慈濟醫院</option>
+                    </select>
+                </div>
+                <div class="input-search" style="margin-left: auto; width: 100px;">
+                    <div class="fs-14">&nbsp;</div>
+                    <button class="btn-main ml-10" onclick="search();">查詢</button>
+                </div>
+
+            </div>
+            <div id="result-block" class="mt-20 d-none">
+                <div style="overflow-x: auto;">
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>時間</th>
+                                <th>姓名</th>
+                                <th>院所</th>
+                                <th>註記</th>
+                                <th>報告</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        const patient = getPatient();
+        document.addEventListener('DOMContentLoaded', () => {
+            const login = checkLogin();
+            if (login && patient) {
+                setPatient();
+            }
+        });
+
+        const setPatient = () => {
+            document.getElementById('patient-name').innerText = '您好，' + patient.name;
+            document.getElementById('input-patient-identifier').value = patient.identifier;
+        }
+
+        const search = async () => {
+            const identifier = document.getElementById('input-patient-identifier').value;
+            const organizationID = document.querySelector('select').value;
+            const organizationName = document.querySelector('select').selectedOptions[0].innerText;
+            const start = document.getElementById('start-date').value;
+            const end = document.getElementById('end-date').value;
+
+            let patient = null;
+            if (identifier) {
+                let response = await getPatientByIdentifierAndBirth(identifier, '');
+                if (!response.success) {
+                    alert("查無病患資料");
+                    return;
+                }
+                patient = response.data;
+            }
+
+            let response = await getDocumentReferenceByCondition(patient, organizationID, start, end);
+            if (!response.success) {
+                alert("查無資料");
+                return;
+            }
+
+            const results = response.data;
+            document.getElementById('result-block').classList.remove('d-none');
+
+            const tbody = document.getElementById('tbody');
+            let html = '';
+            if (results.length === 0) {
+                html = `
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <div class="pt-10 pb-10">查無資料</div>
+                        </td>
+                    </tr>
+                `;
+            }
+            else {
+                results.forEach((data) => {
+                    html += `
+                    <tr>
+                        <td>${data.time.slice(0, 10)}</td>
+                        <td>${data.name}</td>
+                        <td>${data.organization ? data.organization.name : '-'}</td>
+                        <td>${data.note}</td>
+                        <td>
+                            <button class="btn-main small" onclick="goToReport(this)" data-attachment="${data.attachment}">檢視</button>
+                        </td>
+                    </tr>
+                `;
+                });
+            }
+            tbody.innerHTML = html;
+        }
+
+        const goToReport = (e) => {
+            const attachment = e.getAttribute('data-attachment');
+            localStorage.setItem('patient-ebm-attachment', attachment);
+            window.location.href = '/patient-ebm.html';
+            // window.open('/patient-ebm.html', '_blank');
+        }
+    </script>
+</body>
+
+</html>

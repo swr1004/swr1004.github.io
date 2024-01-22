@@ -1,0 +1,429 @@
+body {
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #f1f1f1;
+}
+
+/* =========== Font Sizes =========== */
+.fs-12 {
+	font-size: 12px;
+}
+
+.fs-13 {
+	font-size: 13px;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
+.fs-15 {
+	font-size: 15px;
+}
+
+.fs-16 {
+	font-size: 16px;
+}
+
+.fs-17 {
+	font-size: 17px;
+}
+
+.fs-18 {
+	font-size: 18px;
+}
+
+.fs-19 {
+	font-size: 19px;
+}
+
+.fs-20 {
+	font-size: 20px;
+}
+
+.fs-21 {
+	font-size: 21px;
+}
+
+.fs-22 {
+	font-size: 22px;
+}
+
+.fs-23 {
+	font-size: 23px;
+}
+
+.fs-24 {
+	font-size: 24px;
+}
+
+.fs-25 {
+	font-size: 25px;
+}
+
+.fs-26 {
+	font-size: 26px;
+}
+
+.fs-27 {
+	font-size: 27px;
+}
+
+.fs-28 {
+	font-size: 28px;
+}
+
+.fs-29 {
+	font-size: 29px;
+}
+
+.fs-30 {
+	font-size: 30px;
+}
+
+/* =========== Margin =========== */
+.mt-10 {
+	margin-top: 10px;
+}
+
+.mt-12 {
+	margin-top: 12px;
+}
+
+.mt-15 {
+	margin-top: 15px;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+.mt-25 {
+	margin-top: 25px;
+}
+
+.mt-30 {
+	margin-top: 30px;
+}
+
+.mt-40 {
+	margin-top: 40px;
+}
+
+.mt-50 {
+	margin-top: 50px;
+}
+
+.mt-60 {
+	margin-top: 60px;
+}
+
+.ml-10 {
+	margin-left: 10px;
+}
+
+.ml-12 {
+	margin-left: 12px;
+}
+
+.ml-15 {
+	margin-left: 15px;
+}
+
+.ml-20 {
+	margin-left: 20px;
+}
+
+.ml-25 {
+	margin-left: 25px;
+}
+
+.ml-30 {
+	margin-left: 30px;
+}
+
+.mr-10 {
+	margin-right: 10px;
+}
+
+.mr-12 {
+	margin-right: 12px;
+}
+
+.mr-15 {
+	margin-right: 15px;
+}
+
+.mr-20 {
+	margin-right: 20px;
+}
+
+.mr-25 {
+	margin-right: 25px;
+}
+
+.mr-30 {
+	margin-right: 30px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mb-12 {
+	margin-bottom: 12px;
+}
+
+.mb-15 {
+	margin-bottom: 15px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.mb-25 {
+	margin-bottom: 25px;
+}
+
+.mb-30 {
+	margin-bottom: 30px;
+}
+
+.mb-40 {
+	margin-bottom: 40px;
+}
+
+.mb-50 {
+	margin-bottom: 50px;
+}
+
+.mb-60 {
+	margin-bottom: 60px;
+}
+
+.margin-auto {
+	margin: auto;
+}
+
+/* =========== Padding =========== */
+.pt-10 {
+	padding-top: 10px;
+}
+
+.pt-12 {
+	padding-top: 12px;
+}
+
+.pt-15 {
+	padding-top: 15px;
+}
+
+.pt-20 {
+	padding-top: 20px;
+}
+
+.pt-25 {
+	padding-top: 25px;
+}
+
+.pt-30 {
+	padding-top: 30px;
+}
+
+.pl-10 {
+	padding-left: 10px;
+}
+
+.pl-12 {
+	padding-left: 12px;
+}
+
+.pl-15 {
+	padding-left: 15px;
+}
+
+.pl-20 {
+	padding-left: 20px;
+}
+
+.pl-25 {
+	padding-left: 25px;
+}
+
+.pl-30 {
+	padding-left: 30px;
+}
+
+.pr-10 {
+	padding-right: 10px;
+}
+
+.pr-12 {
+	padding-right: 12px;
+}
+
+.pr-15 {
+	padding-right: 15px;
+}
+
+.pr-20 {
+	padding-right: 20px;
+}
+
+.pr-25 {
+	padding-right: 25px;
+}
+
+.pr-30 {
+	padding-right: 30px;
+}
+
+.pb-10 {
+	padding-bottom: 10px;
+}
+
+.pb-12 {
+	padding-bottom: 12px;
+}
+
+.pb-15 {
+	padding-bottom: 15px;
+}
+
+.pb-20 {
+	padding-bottom: 20px;
+}
+
+.pb-25 {
+	padding-bottom: 25px;
+}
+
+.pb-30 {
+	padding-bottom: 30px;
+}
+
+/* =========== Text Align =========== */
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-start {
+	text-align: start;
+}
+
+.text-end {
+	text-align: end;
+}
+
+.text-justify {
+	text-align: justify;
+}
+
+/* =========== Justify =========== */
+.justify-center {
+	justify-content: center;
+}
+
+.justify-between {
+	justify-content: space-between;
+}
+
+/* =========== Flex =========== */
+.flex {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.flex-column {
+	flex-direction: column;
+}
+
+.flex-row {
+	flex-direction: row;
+}
+
+/* =========== Width =========== */
+.w-50 {
+	width: 50% !important;
+}
+
+@media screen and (max-width: 768px) {
+	.w-50 {
+		width: 100% !important;
+	}
+}
+.w-100 {
+	width: 100% !important;
+}
+
+/*  =========== Height =========== */
+.h-50 {
+	height: 50% !important;
+}
+
+.h-80 {
+	height: 80% !important;
+}
+
+.h-90 {
+	height: 90% !important;
+}
+
+.h-100 {
+	height: 100% !important;
+}
+
+/* =========== Table =========== */
+.table-bordered table,
+.table-bordered td,
+.table-bordered th {
+	border: 1px solid #ddd;
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table thead {
+	background-color: #6c6c6c;
+}
+
+.table tbody {
+	background-color: white;
+}
+
+.table th {
+	padding: 10px;
+	color: white;
+}
+
+.table td {
+	padding: 0 15px;
+}
+
+/* =========== Display =========== */
+.d-none {
+	display: none;
+}
+
+.d-block {
+	display: block;
+}
+
+.d-inline-block {
+	display: inline-block;
+}

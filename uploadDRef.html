@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠系統</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">睡眠系統</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <a href="/uploadDRef.html">上傳檢驗報告</a>
+                </li>
+                <li>
+                    <a href="/reports.html">調閱檢驗報告</a>
+                </li>
+                <li>
+                    <a href="/waiting.html">看診清單</a>
+                </li>
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <div class="flex">
+                <div>醫師：<span id="docker-name"></span></div>
+                <div class="ml-30">編號：<span id="docker-id"></span></div>
+            </div>
+            <hr />
+            <div class="mt-15">
+                <div class="card">
+                    <div class="flex justify-between">
+                        <div class="w-50">
+                            <div id="patient-search" class="flex d-none">
+                                <input id="input-patient-identifier" type="text" class="form-control"
+                                    placeholder="請輸入身分證" style="width: 60%;" value="">
+                                <button class="btn-main small ml-20" onclick="search();">查詢</button>
+                            </div>
+                            <div id="patient-info" class="flex">
+                                <div>身分證字號：<span id="patient-identifier"></span></div>
+                                <div class="ml-30">姓名：<span id="patient-name"></span></div>
+                            </div>
+                            <hr />
+                            <div class="mt-15">
+                                <div>選取EBM</div>
+                                <div class="flex">
+                                    <input id="input-ebm" type="file" class="form-control" style="width: 60%;"
+                                        accept=".ebm">
+                                    <button id="btn-upload-ebm" class="btn-main small ml-20"
+                                        onclick="uploadFile();">上傳</button>
+                                </div>
+                            </div>
+                            <div class="mt-15">
+                                <div>EBM資訊</div>
+                                <div class="flex">
+                                    <input id="file-url" type="text" class="form-control" style="width: 60%;" disabled
+                                        value="">
+                                    <button class="btn-main small ml-20" onclick="goToReport();">檢視</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-50">
+                            <div>備註</div>
+                            <textarea id="note" class="form-control w-100 h-90" rows="10"
+                                placeholder="請輸入備註"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-end">
+                <button class="btn-main" onclick="upload();">上傳檢驗報告</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        let docPatientID = null;
+        const practitioner = getPractioner();
+        document.addEventListener('DOMContentLoaded', () => {
+            const login = checkLogin();
+            if (login && practitioner) {
+                setPractitioner();
+                getData();
+            }
+        });
+
+        const setPractitioner = () => {
+            document.getElementById('docker-name').innerText = practitioner.name;
+            document.getElementById('docker-id').innerText = practitioner.id;
+        }
+
+        const getData = async () => {
+            const en = getUrlParam("en");
+            if (!en) {
+                document.getElementById('patient-search').classList.remove('d-none');
+                document.getElementById('patient-info').classList.add('mt-15');
+                document.getElementById('input-patient-identifier').value = 'A122229890';
+                return;
+            }
+
+            // 有看診號
+            let response = await getEncounterDataById(en);
+            if (!response.success) {
+                alert("查無看診資料");
+                window.location.href = '/waiting.html';
+                return;
+            }
+            const encounter = response.data;
+            if (encounter.status !== 'in-progress') {
+                alert("此看診號非看診中");
+                window.location.href = '/waiting.html';
+                return;
+            }
+
+            const patientID = encounter.subject.reference.split('/')[1];
+            response = await getPatientById(patientID);
+            if (!response.success) {
+                alert("查無病患資料");
+                window.location.href = '/waiting.html';
+                return;
+            }
+
+            const patient = response.data;
+            document.getElementById('patient-identifier').innerText = patient.identifier && patient.identifier.length > 0 ? patient.identifier[0].value : '-';
+            document.getElementById('patient-name').innerText = patient.name[0].text;
+
+            docPatientID = patient.id;
+        }
+
+        const search = async () => {
+            const identifier = document.getElementById('input-patient-identifier').value;
+            if (!identifier) {
+                alert('請輸入身分證字號');
+                return;
+            }
+
+            let response = await getPatientByIdentifierAndBirth(identifier, '');
+            if (!response.success) {
+                alert("查無病患資料");
+                return;
+            }
+
+            const patient = response.data;
+            document.getElementById('patient-identifier').innerText = patient.identifier && patient.identifier.length > 0 ? patient.identifier[0].value : '-';
+            document.getElementById('patient-name').innerText = patient.name[0].text;
+
+            docPatientID = patient.id;
+        }
+
+        const uploadFile = async () => {
+            const file = document.getElementById('input-ebm').files[0];
+            if (!file) {
+                alert('請選擇檔案');
+                return;
+            }
+
+            document.getElementById('btn-upload-ebm').disabled = true;
+            setTimeout(async () => {
+                let response = await uploadFileToStorage(file);
+                if (response.success) {
+                    alert('上傳成功');
+                    document.getElementById('file-url').value = response.data;
+                }
+                else {
+                    document.getElementById('file-url').value = '';
+                    alert(response.msg ? response.msg : '上傳時發生錯誤');
+                }
+                document.getElementById('btn-upload-ebm').disabled = false;
+            }, 300);
+        }
+
+        const goToReport = (e) => {
+            let url = document.getElementById('file-url').value;
+            if (!url) {
+                alert('請上傳EBM');
+                return;
+            }
+            window.open('/ebm.html', '_blank');
+        }
+
+        const upload = async () => {
+            if (!docPatientID) {
+                alert('請選擇病患');
+                return;
+            }
+
+            let url = document.getElementById('file-url').value;
+            if (!url) {
+                alert('請上傳EBM');
+                return;
+            }
+
+            let encounterID = getUrlParam("en") ? getUrlParam("en") : null;
+            const note = document.getElementById('note').value;
+
+            let now = new Date().toISOString();
+            let response = await uploadDocumentReference(docPatientID, encounterID, url, note, now);
+            if (!response.success) {
+                alert(response.msg ? response.msg : '上傳時發生錯誤');
+                return;
+            }
+
+            if (!encounterID) {
+                alert('檢驗報告上傳成功');
+                window.location.reload();
+            }
+            else {
+                alert('檢驗報告上傳成功');
+                doComplete(encounterID);
+            }
+        }
+
+        const doComplete = async (id) => {
+            let response = await updateEncounterStatus(id, 'completed');
+            if (!response.success) {
+                alert(response.msg ? response.msg : '修改看診狀態時發生錯誤');
+                return;
+            }
+            alert('已修改看診狀態為「已完成」');
+            window.location.href = '/waiting.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠系統</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 30%;
+            max-width: 120px;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="text-center">
+            <img src="/img/logo.png" alt="logo" class="logo">
+        </div>
+        <h1 class="mt-20 text-center">病患看診報到</h1>
+        <div class="card">
+            <div class="input-group">
+                <span>身分證字號</span>
+                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入身分證字號"
+                    value="A122229890">
+            </div>
+            <div class="input-group">
+                <span>出生年月日</span>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="請輸入出生年月日"
+                    value="1990-01-01">
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn-main" onclick="checkin();">報到</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script>
+        const checkin = async () => {
+            const identifier = document.getElementById('identifier').value;
+            const birthdate = document.getElementById('birthdate').value;
+
+            if (identifier == '' || birthdate == '') {
+                alert('請輸入身分證字號及出生年月日');
+                return;
+            }
+
+            const response = await getPatientByIdentifierAndBirth(identifier, birthdate);
+            if (!response.success || !response.data) {
+                alert("查不到您的資料，請確認身分證字號及出生年月日是否正確");
+                return;
+            }
+
+            const patient = response.data;
+            const response2 = await getEncountersByPatient(patient.id);
+            if (!response2.success) {
+                alert("查詢掛號紀錄時發生錯誤，請稍後再試");
+                return;
+            }
+
+            const encounters = response2.data;
+            console.log(encounters)
+            if (encounters.length == 0) {
+                alert("無掛號紀錄");
+                return;
+            }
+
+            let uncheckin = encounters.filter(item => item.status == 'unknown');
+            if (uncheckin.length == 0) {
+                alert("您已報到");
+                return;
+            }
+
+            let error = false;
+            for (let i in uncheckin) {
+                let encounter = uncheckin[i];
+                let response = await updateEncounterStatus(encounter.id, 'planned');
+                if (!response.success) {
+                    error = true;
+                }
+            }
+
+            if (error) {
+                alert("報到時發生錯誤，請稍後再試");
+                return;
+            }
+            alert("報到成功");
+        }
+    </script>
+</body>
+
+</html>

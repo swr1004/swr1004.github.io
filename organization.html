@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教案儲存管理</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        .unknown {
+            background-color: #b2b1b1;
+            color: white;
+            cursor: auto;
+        }
+
+        .unknown:hover {
+            background-color: #b2b1b1;
+            color: white;
+        }
+
+        .planned {
+            background-color: #F0BE5D;
+            color: white;
+            cursor: auto;
+        }
+
+        .planned:hover {
+            background-color: #F0BE5D;
+            color: white;
+        }
+
+        .in-progress {
+            background-color: #1b79b4;
+            color: white;
+            cursor: auto;
+        }
+
+        .in-progress:hover {
+            background-color: #1b79b4;
+            color: white;
+        }
+
+        .completed {
+            background-color: #39c056;
+            color: white;
+            cursor: auto;
+        }
+
+        .completed:hover {
+            background-color: #39c056;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">教案儲存管理-組織(Organization)</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <a href="/practitioner.html">成員(Practitioner)</a>
+                </li>
+                <li>
+                    <a href="/encounter.html">課程(Encounter)</a>
+                </li>
+                <li>
+                    <a href="/dr.html">教材(DocumentReference)</a>
+                </li>
+
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <div class="flex">
+                <div>帳號：<span id="docker-name"></span></div>
+                <div class="ml-30">編號：<span id="docker-id"></span></div>
+            </div>
+            <hr />
+            <div class="mt-15">
+                <div class="card">
+                    <div class="flex justify-between">
+                       
+                            <div id="patient-search" class="flex ">
+                                <input id="input-orgname" type="text" class="form-control"
+                                    placeholder="輸入組織名稱" style="width: 60%;" value="">
+                                <button class="btn-main small ml-20" onclick="search();">查詢</button>
+                            </div>
+                           
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-end">
+                <button class="btn-main" onclick="createOrg();">建立組織</button>
+            </div>
+            <hr/>
+            <div class="mt-15">
+                <div style="overflow-x: auto;">
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>組織代碼</th>
+                                <th>名稱</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        const person = getPerson();
+        document.addEventListener('DOMContentLoaded', () => {
+            const login = checkLogin();
+            if (login && person) {
+                setPerson();
+                getData();
+            }
+        });
+
+        const setPerson = () => {
+            document.getElementById('docker-name').innerText = person.name;
+            document.getElementById('docker-id').innerText = person.id;
+        }
+
+        const getData = async () => {
+            let response = await getFHIRResource("Organization");
+            let datas = response.success ? response.data : [];
+            if (Array.isArray(response.data)){
+                datas.sort((a, b) => {
+                return a.id - b.id;
+            });
+        }
+            setData(datas);
+        }
+
+        const setData = (datas) => {
+            const tbody = document.getElementById('tbody');
+            let html = '';
+            // 未報到(unknown)、已報到(planned)、看診中(in-progress)、已完成(completed)
+           /*
+            Array.prototype.forEach.call(datas, data => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.id}</td>
+                        <td>${data.name}</td>
+                        
+                    </tr>
+                `;
+            });
+            */
+           
+           if (Array.isArray(datas)){
+            datas.forEach((data) => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.resource.id}</td>
+                        <td>${data.resource.name}</td>
+                        
+                    </tr>
+                `;
+            });
+           }else{
+            html += `
+                    <tr>
+                        <td>${datas.resource.id}</td>
+                        <td>${datas.resource.name}</td>
+                        
+                    </tr>
+                `;
+           }
+            
+            tbody.innerHTML = html;
+        }
+
+        const createOrg = async () => {
+            let name = document.getElementById('input-orgname').value;
+            if (!name) {
+                alert('請輸入組織名稱');
+                return;
+            }
+            
+            let response1 = await getOrganizationByName(name);
+            if (response1.success) {
+                alert("組織已存在");
+                return;
+            }
+            orgJSONobj.name = name;
+             
+            let response = await createOrganization(orgJSONobj);
+            if (!response.success) {
+                alert(response.msg ? response.msg : '上傳時發生錯誤');
+                return;
+            }
+            getData();
+        }
+
+        const search = async () => {
+            const name = document.getElementById('input-orgname').value;
+            if (!name) {
+                alert('請輸入組織名稱');
+                return;
+            }
+
+            let response = await getOrganizationByName(name);
+            if (!response.success) {
+                alert("找不到組織名稱");
+                return;
+            }else{
+                alert("組織已存在");
+
+                return;
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>

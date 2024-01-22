@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠系統</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 30%;
+            max-width: 120px;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="text-center">
+            <img src="/img/logo.png" alt="logo" class="logo">
+        </div>
+        <h1 class="mt-20 text-center">睡眠系統</h1>
+        <div class="card">
+            <div class="input-group">
+                <span>身分證字號</span>
+                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入身分證字號"
+                    value="A122229890">
+            </div>
+            <div class="input-group">
+                <span>出生年月日</span>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="請輸入出生年月日"
+                    value="1990-01-01" >
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn-main" onclick="login();">登入</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const id = localStorage.getItem('login-id');
+                const patient = JSON.parse(localStorage.getItem('patient'));
+                const role = localStorage.getItem('login-role');
+                if (id && patient && role == 'patient') {
+                    window.location.href = '/patient-reports.html';
+                }
+            } catch (e) { }
+        });
+
+        const login = async () => {
+            const identifier = document.getElementById('identifier').value;
+            const birthdate = document.getElementById('birthdate').value;
+
+            if (identifier == '' || birthdate == '') {
+                alert('請輸入身分證字號及出生年月日');
+                return;
+            }
+
+            const response = await getPatientByIdentifierAndBirth(identifier, birthdate);
+            if (!response.success || !response.data) {
+                alert("查不到您的資料，請確認身分證字號及出生年月日是否正確");
+                return;
+            }
+
+            let resource = response.data;
+            let name = resource.name.length > 0 ? resource.name[0].text : null;
+
+            if (!name) {
+                alert("取得資料時發生錯誤");
+                return;
+            }
+
+            const patient = {
+                id: resource.id,
+                name: name,
+                identifier: resource.identifier[0].value
+            };
+
+            localStorage.setItem('patient', JSON.stringify(patient));
+            localStorage.setItem('login-role', 'patient');
+            localStorage.setItem('login-id', patient.id);
+
+            alert('登入成功！');
+            window.location.href = '/patient-reports.html';
+        }
+    </script>
+</body>
+
+</html>

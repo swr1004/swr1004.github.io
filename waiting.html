@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠系統</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        .unknown {
+            background-color: #b2b1b1;
+            color: white;
+            cursor: auto;
+        }
+
+        .unknown:hover {
+            background-color: #b2b1b1;
+            color: white;
+        }
+
+        .planned {
+            background-color: #F0BE5D;
+            color: white;
+            cursor: auto;
+        }
+
+        .planned:hover {
+            background-color: #F0BE5D;
+            color: white;
+        }
+
+        .in-progress {
+            background-color: #1b79b4;
+            color: white;
+            cursor: auto;
+        }
+
+        .in-progress:hover {
+            background-color: #1b79b4;
+            color: white;
+        }
+
+        .completed {
+            background-color: #39c056;
+            color: white;
+            cursor: auto;
+        }
+
+        .completed:hover {
+            background-color: #39c056;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">睡眠系統</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <a href="/uploadDRef.html">上傳檢驗報告</a>
+                </li>
+                <li>
+                    <a href="/reports.html">調閱檢驗報告</a>
+                </li>
+                <li>
+                    <a href="/waiting.html">看診清單</a>
+                </li>
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <div class="flex">
+                <div>醫師：<span id="docker-name"></span></div>
+                <div class="ml-30">編號：<span id="docker-id"></span></div>
+            </div>
+            <hr />
+            <div class="mt-15">
+                <div style="overflow-x: auto;">
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>看診號</th>
+                                <th>姓名</th>
+                                <th>報到狀態</th>
+                                <th>註記</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        const practitioner = getPractioner();
+        document.addEventListener('DOMContentLoaded', () => {
+            const login = checkLogin();
+            if (login && practitioner) {
+                setPractitioner();
+                getData();
+            }
+        });
+
+        const setPractitioner = () => {
+            document.getElementById('docker-name').innerText = practitioner.name;
+            document.getElementById('docker-id').innerText = practitioner.id;
+        }
+
+        const getData = async () => {
+            let response = await getEncountersByPractitioner(practitioner.id);
+            let datas = response.success ? response.data : [];
+            datas.sort((a, b) => {
+                return a.id - b.id;
+            });
+            setData(datas);
+        }
+
+        const setData = (datas) => {
+            const tbody = document.getElementById('tbody');
+            let html = '';
+            // 未報到(unknown)、已報到(planned)、看診中(in-progress)、已完成(completed)
+
+            datas.forEach((data) => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.id}</td>
+                        <td>${data.name}</td>
+                        <td>
+                            <div class="margin-auto btn-main small ${data.status}">${getStatusText(data.status)}</div>
+                        </td>
+                        <td>${data.note}</td>
+                        <td>
+                            ${data.status === `planned` ? `<button class="btn-main small" onclick="doProgress(${data.id})">看診</button>` : ``}
+                            ${data.status === `in-progress` ? `<button class="btn-main small" style="max-width: 120px;" onclick="window.location.href='/uploadDRef.html?en=${data.id}';">上傳檢驗報告</button>` : ``}
+                            ${data.status === `in-progress` ? `<button class="btn-main small ml-8" onclick="doComplete(${data.id})">看診完成</button>` : ``}
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        const getStatusText = (status) => {
+            switch (status) {
+                case 'unknown':
+                    return '未報到';
+                case 'planned':
+                    return '已報到';
+                case 'in-progress':
+                    return '看診中';
+                case 'completed':
+                    return '已完成';
+                default:
+                    return '';
+            }
+        }
+
+        const doProgress = async (id) => {
+            let response = await updateEncounterStatus(id, 'in-progress');
+            if (!response.success) {
+                alert(response.msg ? response.msg : '系統錯誤');
+                return;
+            }
+            getData();
+        }
+
+        const doComplete = async (id) => {
+            let response = await updateEncounterStatus(id, 'completed');
+            if (!response.success) {
+                alert(response.msg ? response.msg : '系統錯誤');
+                return;
+            }
+            getData();
+        }
+    </script>
+</body>
+
+</html>

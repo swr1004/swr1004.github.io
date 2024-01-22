@@ -1,0 +1,40 @@
+#dialog {
+	line-height: 200px;
+	width: 100%;
+	text-align: center;
+	background: radial-gradient(#222, black);
+}
+svg {
+	display: inline-block;
+	vertical-align: middle;
+}
+path {
+	stroke: cyan;
+	stroke-width: 6;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	stroke-dasharray: 193.904983521;
+	fill: none;
+	animation: load 4s linear infinite, color 3s linear infinite;
+}
+.fc-white {
+	color: white;
+}
+.ft-20 {
+	font-size: 20px;
+}
+
+@keyframes load {
+	from {
+		stroke-dashoffset: 775.6199340820312;
+	}
+}
+
+@keyframes color {
+	33% {
+		stroke: yellow;
+	}
+	66% {
+		stroke: magenta;
+	}
+}
