@@ -440,7 +440,7 @@ const createPersonAndPractitioner = async (data) => {
             data: response
         };
     }else{
-        const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
         return {
             success: success,
             msg: success ? "註冊成功" : "註策失敗",
