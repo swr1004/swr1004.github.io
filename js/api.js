@@ -433,7 +433,7 @@ const createPersonAndPractitioner = async (data) => {
 
     const url = `${API_HOST}/api/createAccount`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
-    if (response.code !=undefined && response.code==400){
+    if (response.data.code !=undefined && response.data.code==400){
         return {
             success: false,
             msg: "註冊失敗" + response.msg,
