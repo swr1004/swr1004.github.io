@@ -160,7 +160,9 @@
 
         const getData = async () => {
             let response = await getFHIRResource("Encounter");
-            let datas = response.success ? response.data : [];
+            //console.log(response.success); 2024/11/20 always return false on github.io
+            //let datas = response.success ? response.data : [];
+            let datas = response.data ;
             if (Array.isArray(response.data)){
                     datas.sort((a, b) => {
                          return a.id - b.id;
