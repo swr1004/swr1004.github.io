@@ -87,15 +87,18 @@
             <hr/>
             <div class="mt-15">
                 <div style="overflow-x: auto;">
+                    <form action="https://dd1004.github.io/Practitioner.html">
                     <table class="table table-bordered" style="min-width: 700px;">
                         <thead>
                             <tr>
                                 <th>成員ID</th>
                                 <th>姓名</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="tbody"></tbody>
                     </table>
+                </form>
                 </div>
             </div>
         </div>
@@ -104,6 +107,12 @@
     <script src="/js/api.js"></script>
     <script src="/js/common.js"></script>
     <script>
+        let mytoekn = localStorage.getItem('token');
+        function passToekn(){
+
+            localStorage.setItem('token', mytkoen);
+            return false;
+        };
         const person = getPerson();
         document.addEventListener('DOMContentLoaded', () => {
             const login = checkLogin();
@@ -155,7 +164,7 @@
                     <tr>
                         <td>${data.resource.id}</td>
                         <td>${data.resource.name[0].text}</td>
-                        
+                        <td><input type="submit" value="click" onclick="passToekn();"/></td>
                     </tr>
                 `;
             });
@@ -164,6 +173,7 @@
                     <tr>
                         <td>${datas.resource.id}</td>
                         <td>${datas.resource.name[0].text}</td>
+                        <td><input type="submit" value="click" onclick="passToekn();"/></td>
                         
                     </tr>
                 `;
