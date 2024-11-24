@@ -450,6 +450,28 @@ const createPersonAndPractitioner = async (data) => {
     
 }
 
+const createPersonAndPatient = async (data) => {
+    
+
+    const url = `${API_HOST}/api/createAccount`;
+    const response = await usePost(url, API_HEADERS, JSON.stringify(data));
+    if (response.data.code !=undefined && response.data.code==400){
+        return {
+            success: false,
+            msg: "註冊失敗" + response.msg,
+            data: response
+        };
+    }else{
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
+        return {
+            success: success,
+            msg: success ? "註冊成功" : "註策失敗",
+            data: response
+        };
+    }
+    
+}
+
 const createFHIRResource = async (myresource, data) => {
     
 
