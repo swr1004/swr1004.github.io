@@ -87,7 +87,7 @@
             <hr/>
             <div class="mt-15">
                 <div style="overflow-x: auto;">
-                    <form action="https://dd1004.github.io/practitioner.html">
+                    <form name = "myform" action="https://dd1004.github.io/practitioner.html">
                     <table class="table table-bordered" style="min-width: 700px;">
                         <thead>
                             <tr>
@@ -110,7 +110,9 @@
         let mytoekn = localStorage.getItem('token');
         function passToekn(){
             alert(mytoekn);
-            localStorage.setItem('token', mytkoen);
+            const formData = document.getElementById("myform");
+            // Add a text field
+            formData.append("token", mytkoen);
             return false;
         };
         const person = getPerson();
