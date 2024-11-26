@@ -88,6 +88,7 @@
             <div class="mt-15">
                 <div style="overflow-x: auto;">
                     <form method="GET" name = "myform" action="https://dd1004.github.io/practitioner.html" target="_blank">
+                        <input type="hidden" id="mytoken">
                     <table class="table table-bordered" style="min-width: 700px;">
                         <thead>
                             <tr>
@@ -108,6 +109,7 @@
     <script src="/js/common.js"></script>
     <script>
         let mytoekn = localStorage.getItem('token');
+        document.getElementById("mytoken").value = mytoekn;
         function passToekn(){
             alert(mytoekn);
             const formData = document.getElementById("myform");
