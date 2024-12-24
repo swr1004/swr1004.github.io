@@ -501,6 +501,7 @@ const createPatient = async (data) => {
 
     const url = `${API_HOST}/api/registerPatient`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
+    console.log(response);
     if (response.data.code !=undefined && response.data.code==400){
         return {
             success: false,
