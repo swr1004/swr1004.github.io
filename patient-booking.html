@@ -142,11 +142,7 @@
         }
 
         const query= async () => {
-            let querycondition = document.getElementById('query-id').value;
-            if (!querycondition) {
-                getData();
-            }else{
-                let response = await getFHIRResource("Observation?code="+querycondition);
+            let response = await getFHIRResource("Observation?code="+querycondition);
                 console.log(response);
                 let datas =response.data ;
                 if (Array.isArray(response.data)){
@@ -155,7 +151,6 @@
                    });
                 }
                 setData(datas);
-            }
            
         }
 
