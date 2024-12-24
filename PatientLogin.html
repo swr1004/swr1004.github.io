@@ -88,7 +88,8 @@
             const patient = {
                 id: resource.id,
                 name: name,
-                identifier: resource.identifier[0].value
+                identifier: resource.identifier[0].value,
+                birthDate : resource.birthDate
             };
             localStorage.setItem('token',response.jwt);
 
