@@ -85,12 +85,41 @@ let personJSONobj = {
     let  patientJSONobj = {
 		"resourceType": "Patient",
 		"active": "true",
+        "identifier": [ 
+			{
+				"system": "UserID",
+				"value": ""
+			}, 
+			{
+				"system": "Password",
+				"value": ""
+			},
+			{
+				"system": "jobPosition",
+				"value": ""
+			},
+			{
+				"system": "institution",
+				"value": ""
+			},
+			{
+				"system": "nationality",
+				"value": ""
+			}
+		],
+		"gender": "",
 		"name": [ {
 			"text": "testPatient1"
 		} ],
 		"managingOrganization": {
 			"reference": "Organization/98a6f5c5-af58-41b5-bd6f-d8ca996b5580"
 		},
+		"telecom": [
+			{
+			  "system": "email",
+			  "value": "Jim@example.org"
+			}
+		]
 	};
 
     let encounterJSONobj = {
