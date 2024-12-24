@@ -34,7 +34,7 @@ const checkLogin = () => {
 const logout = () => {
     let loginUrl = "/login.html";
     if (localStorage.getItem('login-role') === "patient") {
-        loginUrl = "/patient-login.html";
+        loginUrl = "/PatientLogin.html";
     }
     localStorage.removeItem('login-id');
     localStorage.removeItem('login-role');
