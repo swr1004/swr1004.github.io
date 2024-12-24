@@ -73,6 +73,17 @@
 
     <script src="/js/api.js"></script>
     <script>
+       const patientMaster = getPatient();
+        document.addEventListener('DOMContentLoaded', () => {
+            const login = checkLogin();
+            if (login && patientMaster) {
+                setPatient();
+            }
+        });
+
+        const setPatient = () => {
+            document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+        }
         const checkin = async () => {
             const identifier = document.getElementById('identifier').value;
             const birthdate = document.getElementById('birthdate').value;

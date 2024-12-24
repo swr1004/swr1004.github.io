@@ -126,29 +126,27 @@
     <script src="/js/api.js"></script>
     <script src="/js/common.js"></script>
     <script>
-        const person = getPerson();
-        const patient = getPatient();
+               const patientMaster = getPatient();
         document.addEventListener('DOMContentLoaded', () => {
             let mytoekn =   getQueryString()["token"];
             if (mytoekn !=null){
                 localStorage.setItem('token',mytoekn);
                // alert(mytoekn);
-                document.getElementById('docker-name').innerText = "Authorized";
-                document.getElementById('docker-id').innerText = "Authorized";
+ 
+                document.getElementById('patient-name').innerText = '您好，';
                 getData();
             }else{
                 const login = checkLogin();
-                if (login && person) {
-                    setPerson();
-                    getData();
-                }
-                if (login && patient) {
-                    setPerson();
-                    getData();
+                if (login && patientMaster) {
+                   setPatient();
+                   getData();
                 }
             }
             
         });
+
+        
+       
 
         const getQueryString= () => {
             var result = {}, queryString = location.search.slice(1),
@@ -160,14 +158,7 @@
         }
 
 
-        const setPerson = () => {
-            document.getElementById('docker-name').innerText = person.name;
-            document.getElementById('docker-id').innerText = person.id;
-        }
-        const setPatient = () => {
-            document.getElementById('docker-name').innerText = patient.name;
-            document.getElementById('docker-id').innerText = patient.id;
-        }
+       
 
         const query= async () => {
             let querycondition = document.getElementById('query-id').value;
