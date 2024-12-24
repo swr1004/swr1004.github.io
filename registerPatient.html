@@ -175,11 +175,11 @@
             personJSONobj.identifier[1].value= sha256(password1);
             personJSONobj.name[0].text = name;
             personJSONobj.gender = gender;
-            personJSONobj.telecom[0].value = email;
+                .telecom[0].value = email;
 
             
             patientJSONobj.identifier[0].value= email;
-            personJSONobj.identifier[1].value= sha256(password1);
+            patientJSONobj.identifier[1].value= sha256(password1);
             patientJSONobj.name[0].text = name;
             patientJSONobj.gender = gender;
             patientJSONobj.telecom[0].value = email;
