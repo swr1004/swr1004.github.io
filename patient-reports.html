@@ -115,10 +115,11 @@
             const organizationName = document.querySelector('select').selectedOptions[0].innerText;
             const start = document.getElementById('start-date').value;
             const end = document.getElementById('end-date').value;
+            const birthDate = patient.birthDate;
 
             let patient = null;
             if (identifier) {
-                let response = await getPatientByIdentifierAndBirth(identifier, '');
+                let response = await getPatientByIdentifierAndBirth(identifier, birthDate);
                 if (!response.success) {
                     alert("查無病患資料");
                     return;
