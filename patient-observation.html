@@ -146,7 +146,9 @@
         });
 
         
-       
+        const setPatient = () => {
+            document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+        }
 
         const getQueryString= () => {
             var result = {}, queryString = location.search.slice(1),
