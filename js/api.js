@@ -502,7 +502,7 @@ const createPatient = async (data) => {
     const url = `${API_HOST}/api/registerPatient`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
     console.log(response);
-    if (response.data.code !=undefined && response.data.code==400){
+    if (response.data !=undefined){
         return {
             success: false,
             msg: "註冊失敗" + response.msg,
