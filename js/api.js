@@ -262,6 +262,7 @@ const getPatientById = async (id) => {
 
 const getPatientByIdentifierAndBirth = async (identifier, birthdate) => {
     const url = `${FHIR_BASE}/Patient?identifier=${identifier}&birthdate=${birthdate}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
     let success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
     let data = null;
@@ -280,6 +281,7 @@ const getPatientByIdentifierAndBirth = async (identifier, birthdate) => {
 
 const getEncounterDataById = async (id) => {
     const url = `${FHIR_BASE}/Encounter/${id}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
     const success = response ? true : false;
     return {
@@ -290,6 +292,7 @@ const getEncounterDataById = async (id) => {
 
 const getEncounterDataByPractitionerAndStatus = async (status, id) => {
     const url = `${FHIR_BASE}/Encounter?status=${status}&participant=${id}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
     const success = response ? true : false;
     let datas = [];
@@ -355,6 +358,7 @@ const getEncountersByPractitioner = async (id) => {
 
 const getEncounterDataByPatientAndStatus = async (status, id) => {
     const url = `${FHIR_BASE}/Encounter?status=${status}&patient=${id}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
     const success = response ? true : false;
     let datas = [];
@@ -432,6 +436,7 @@ const updateEncounterStatus = async (id, status) => {
     encounter.status = status;
 
     const url = `${FHIR_BASE}/Encounter/${id}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await usePut(url, API_HEADERS, JSON.stringify(encounter));
     const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
     return {
