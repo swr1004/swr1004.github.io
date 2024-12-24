@@ -556,7 +556,7 @@ const createPatient = async (data) => {
 const createPractitioner = async (data) => {
     
 
-    const url = `${API_HOST}/api/registerPractitioner`;
+    const url = `${API_HOST}/api/regPractioner`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
     console.log(response);
     if (response.data ==undefined){
