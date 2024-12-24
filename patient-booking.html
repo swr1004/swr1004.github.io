@@ -72,6 +72,21 @@
             <div class="text-center">
                 <button type="button" class="btn-main" onclick="booking();">報到</button>
             </div>
+
+            <hr/>
+            <div class="mt-15">
+                <div style="overflow-x: auto;">
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>掛號日期</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -124,6 +139,66 @@
             
 
           
+        }
+
+        const query= async () => {
+            let querycondition = document.getElementById('query-id').value;
+            if (!querycondition) {
+                getData();
+            }else{
+                let response = await getFHIRResource("Observation?code="+querycondition);
+                console.log(response);
+                let datas =response.data ;
+                if (Array.isArray(response.data)){
+                   datas.sort((a, b) => {
+                        return a.id - b.id;
+                   });
+                }
+                setData(datas);
+            }
+           
+        }
+
+      
+
+        const setData = (datas) => {
+            const tbody = document.getElementById('tbody');
+            let html = '';
+            // 未報到(unknown)、已報到(planned)、看診中(in-progress)、已完成(completed)
+           /*
+            Array.prototype.forEach.call(datas, data => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.id}</td>
+                        <td>${data.name}</td>
+                        
+                    </tr>
+                `;
+            });
+            */
+           
+           if (Array.isArray(datas)){
+            datas.forEach((data) => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.resource.actualPeriod.start}</td>
+                        <td>${data.resource.status}</td>
+                        
+                    </tr>
+                `;
+            });
+           }else{
+            html += `
+                    <tr>
+                        <td>${data.resource.actualPeriod.start}</td>
+                        <td>${data.resource.status}</td>
+                    </tr>
+                `;
+           }
+            //alert(html);
+            tbody.innerHTML = html;
         }
     </script>
 </body>
