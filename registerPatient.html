@@ -59,7 +59,7 @@
         <div class="container-header">
             <div class="header-left">
                 
-                <div class="title">病患-註冊帳號</div>
+                <div class="title">教案儲存管理-註冊帳號</div>
             </div>
             <div class="header-right">
 
@@ -106,12 +106,6 @@
                                     ><label for="input-female"> &nbsp;female</label> &nbsp;
                                     <input id="input-other" name="gender" type="radio" class="form-control"
                                     ><label for="input-other"> &nbsp;other</label> &nbsp;
-                            </div>
-                            <hr />
-                            <div id="person-birthday" class=" ">
-                                <span>出生年月日</span>
-                                <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="請輸入出生年月日"
-                                    value="1990-01-01" >
                             </div>
                         </div>
                     </div>
@@ -169,12 +163,6 @@
                 alert('兩次密碼不一玫');
                 return;
             }
-
-            let birthday = document.getElementById('birthday').value;
-            if (!birthday) {
-                alert('請輸入出生年月日');
-                return;
-            }
             //before login , no jwt token , so cannot check
             /*
             let response1 = await getPersonByIdentifier(email);
@@ -188,19 +176,17 @@
             personJSONobj.name[0].text = name;
             personJSONobj.gender = gender;
             personJSONobj.telecom[0].value = email;
-            personJSONobj.birthday.value = birthday;
 
             
-            patientJSONobj.identifier[0].value= email;
-            patientJSONobj.name[0].text = name;
-            patientJSONobj.gender = gender;
-            patientJSONobj.telecom[0].value = email;
-            patientJSONobj.birthday.value = birthday;
+            practitionerJSONobj.identifier[0].value= email;
+            practitionerJSONobj.name[0].text = name;
+            practitionerJSONobj.gender = gender;
+            practitionerJSONobj.telecom[0].value = email;
 
-            registerObj.Person = personJSONobj;
-            registerObj.Patient = patientJSONobj;
+            //registerObj.Person = personJSONobj;
+            registerObj.Practitioner = practitionerJSONobj;
              
-            let response = await createPersonAndPractitioner(registerObj);
+            let response = await createPatient(registerObj);
             if (!response.success) {
                 alert(response.msg ? response.msg : '註冊失敗');
                 return;
@@ -208,7 +194,7 @@
                 console.log(response);
                 alert('註冊成功, 將返回登入頁面, 請重新登入');
             }
-            window.location.href = '/login.html';
+            window.location.href = '/PatientLogin.html';
         }
 
         const search = async () => {

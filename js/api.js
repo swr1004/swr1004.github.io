@@ -1,5 +1,7 @@
 const FHIR_BASE = 'https://fhir.tcumi.com:51443/hapi66/fhir';
 const API_HOST = 'https://fhir.tcumi.com:51443/hapi66';
+//const FHIR_BASE = 'http://localhost:8080/r5/fhir';
+//const API_HOST = 'http://localhost:8080/r5';
 const API_HEADERS = {
     'Content-Type': 'application/json',
     'Authorization' : ''
@@ -166,6 +168,7 @@ const usePost = async (url, headers = {}, body = {}) => {
         headers: headers,
         body: body
     }).then(async (response) => {
+       
         json = await response.json();
     }).catch((error) => {
         console.log(error);
@@ -205,7 +208,15 @@ const getPractitionerByLink = async (link) => {
     };
 }
 
-
+const getPatientByLink = async (link) => {
+    const url = `${FHIR_BASE}/`+link;
+    API_HEADERS.Authorization = localStorage.getItem('token');
+    const response = await useGet(url, API_HEADERS);
+    return {
+        success: response ? response.id  : false,
+        data: response ? response.id ? response : null : null
+    };
+}
 
 
 const getPatientById = async (id) => {
@@ -415,6 +426,18 @@ const userlogin = async (id, identifier) => {
     };
 }
 
+
+const Patientlogin = async (id, identifier) => {
+    const url = `${API_HOST}/api/Patientlogin?username=${id}&password=${identifier}`;
+    const response = await usePost(url, API_HEADERS);
+    console.log(response);
+    //console.log(response.total);
+    return {
+        success: response ? response.total > 0 : false,
+        data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
+        jwt: response.jwt
+    };
+}
 const getPersonById = async (id) => {
     const url = `${FHIR_BASE}/Person/${id}`;
     API_HEADERS.Authorization = localStorage.getItem('token');
@@ -427,11 +450,10 @@ const getPersonById = async (id) => {
     };
 }
 
-
-const createPersonAndPractitioner = async (data) => {
+const createPatient = async (data) => {
     
 
-    const url = `${API_HOST}/api/createAccount`;
+    const url = `${API_HOST}/api/registerPatient`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
     if (response.data.code !=undefined && response.data.code==400){
         return {
@@ -450,7 +472,8 @@ const createPersonAndPractitioner = async (data) => {
     
 }
 
-const createPersonAndPatient = async (data) => {
+
+const createPersonAndPractitioner = async (data) => {
     
 
     const url = `${API_HOST}/api/createAccount`;
