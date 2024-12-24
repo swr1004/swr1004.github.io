@@ -102,6 +102,7 @@
                 setPatient();
             }
             document.getElementById("bookdate").value = toLocalISOString(new Date());
+            query();
         });
 
         const toLocalISOString = (date) =>  {
