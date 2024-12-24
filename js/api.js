@@ -55,6 +55,10 @@ let personJSONobj = {
 			{
 				"system": "UserID",
 				"value": ""
+			}, 
+			{
+				"system": "Password",
+				"value": ""
 			}
 		],
 		"gender": "",
@@ -493,6 +497,27 @@ const Patientlogin = async (id, identifier) => {
     }
     
 }
+
+const Practitionerlogin = async (id, identifier) => {
+    const url = `${API_HOST}/api/Practitionerlogin?username=${id}&password=${identifier}`;
+    const response = await usePost(url, API_HEADERS);
+    console.log(response);
+    //console.log(response.total);
+    if (response.total == null){
+        return {
+            success : false,
+            data : null,
+            jwt : null
+        };
+    }else{
+        return {
+            success: response ? response.total > 0 : false,
+            data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
+            jwt: response.jwt
+        };
+    }
+    
+}
 const getPersonById = async (id) => {
     const url = `${FHIR_BASE}/Person/${id}`;
     API_HEADERS.Authorization = localStorage.getItem('token');
@@ -528,6 +553,28 @@ const createPatient = async (data) => {
     
 }
 
+const createPractitioner = async (data) => {
+    
+
+    const url = `${API_HOST}/api/registerPractitioner`;
+    const response = await usePost(url, API_HEADERS, JSON.stringify(data));
+    console.log(response);
+    if (response.data ==undefined){
+        return {
+            success: false,
+            msg: "註冊失敗" + response.msg,
+            data: response
+        };
+    }else{
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
+        return {
+            success: success,
+            msg: success ? "註冊成功" : "註策失敗",
+            data: response
+        };
+    }
+    
+}
 
 const createPersonAndPractitioner = async (data) => {
     
