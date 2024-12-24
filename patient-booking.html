@@ -103,7 +103,7 @@
         const booking = async () => {
             const identifier = document.getElementById('identifier').value;
             const period = document.getElementById('bookdate').value;
-            const subject = "/Patient/" +patientMaster.id;
+            const subject = "Patient/" +patientMaster.id;
             if (identifier == '' || period == '') {
                 alert('請先登入及選擇看診日期');
                 return;
