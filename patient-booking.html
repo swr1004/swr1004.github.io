@@ -65,7 +65,7 @@
                 <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入email" value="wenrong.hsiao@gmail.com">
             </div>
             <div class="input-group">
-                <span>出生年月日</span>
+                <span>掛號日期</span>
                 <input type="datetime-local" class="form-control" id="bookdate" name="bookdate" placeholder="請輸入出生年月日"
                     value="1990-01-01">
             </div>
@@ -92,7 +92,7 @@
         const toLocalISOString = (date) =>  {
             const localDate = new Date(date - date.getTimezoneOffset() * 60000); //offset in milliseconds. Credit https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
              // Optionally remove second/millisecond if needed
-             localDate.setSeconds(null);
+             //localDate.setSeconds(null);
             localDate.setMilliseconds(null);
             return localDate.toISOString().slice(0, -1);
         }
@@ -108,9 +108,9 @@
                 alert('請先登入及選擇看診日期');
                 return;
             }
-            encounterJSONobj.subject= subject;
+            encounterJSONobj.subject.reference= subject;
             encounterJSONobj.actualPeriod.start= period;
-
+            encounterJSONobj.identifier[0].value="Patient";
           
              
             let response = await createFHIRResource("Encounter", encounterJSONobj);

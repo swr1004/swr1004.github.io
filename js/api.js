@@ -128,7 +128,7 @@ let personJSONobj = {
 		"status": "unknown",
 		"identifier": [ 
 			{
-				"system": "id",
+				"system": "type",
 				"value": ""
 			}, 
 			{
@@ -136,7 +136,7 @@ let personJSONobj = {
 				"value": ""
 			}
 		],
-        "subject" : "",
+        "subject" : {"reference":""},
         "actualPeriod" :{"start":""}
 
     };
