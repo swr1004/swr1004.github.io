@@ -32,9 +32,9 @@
         <h1 class="mt-20 text-center">病患看診報到</h1>
         <div class="card">
             <div class="input-group">
-                <span>身分證字號</span>
-                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入身分證字號"
-                    value="A122229890">
+                
+                    <span>email</span>
+                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入email" value="wenrong.hsiao@gmail.com">
             </div>
             <div class="input-group">
                 <span>出生年月日</span>
@@ -54,13 +54,13 @@
             const birthdate = document.getElementById('birthdate').value;
 
             if (identifier == '' || birthdate == '') {
-                alert('請輸入身分證字號及出生年月日');
+                alert('請輸入email及出生年月日');
                 return;
             }
 
             const response = await getPatientByIdentifierAndBirth(identifier, birthdate);
             if (!response.success || !response.data) {
-                alert("查不到您的資料，請確認身分證字號及出生年月日是否正確");
+                alert("查不到您的資料，請確認email及出生年月日是否正確");
                 return;
             }
 
