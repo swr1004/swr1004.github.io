@@ -178,13 +178,14 @@
             personJSONobj.telecom[0].value = email;
 
             
-            practitionerJSONobj.identifier[0].value= email;
-            practitionerJSONobj.name[0].text = name;
-            practitionerJSONobj.gender = gender;
-            practitionerJSONobj.telecom[0].value = email;
+            patientJSONobj.identifier[0].value= email;
+            personJSONobj.identifier[1].value= sha256(password1);
+            patientJSONobj.name[0].text = name;
+            patientJSONobj.gender = gender;
+            patientJSONobj.telecom[0].value = email;
 
             //registerObj.Person = personJSONobj;
-            registerObj.Practitioner = practitionerJSONobj;
+            registerObj.Patient = patientJSONobj;
              
             let response = await createPatient(registerObj);
             if (!response.success) {
