@@ -83,6 +83,7 @@ let personJSONobj = {
 
 	
     let  patientJSONobj = {
+        
 		"resourceType": "Patient",
 		"active": "true",
         "identifier": [ 
@@ -556,7 +557,8 @@ const createFHIRResource = async (myresource, data) => {
     const url = `${FHIR_BASE}/${myresource}`;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
-    const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
+
+    const success = response ? response.issue==undefined?false: response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
     return {
         success: success,
         msg: success ? "資料新增成功" : "資料新增失敗",
