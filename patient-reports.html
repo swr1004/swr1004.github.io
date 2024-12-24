@@ -96,17 +96,17 @@
     <script src="/js/api.js"></script>
     <script src="/js/common.js"></script>
     <script>
-        const patient = getPatient();
+        const patientMaster = getPatient();
         document.addEventListener('DOMContentLoaded', () => {
             const login = checkLogin();
-            if (login && patient) {
+            if (login && patientMaster) {
                 setPatient();
             }
         });
 
         const setPatient = () => {
-            document.getElementById('patient-name').innerText = '您好，' + patient.name;
-            document.getElementById('input-patient-identifier').value = patient.identifier;
+            document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+            document.getElementById('input-patient-identifier').value = patientMaster.identifier;
         }
 
         const search = async () => {
@@ -115,7 +115,7 @@
             const organizationName = document.querySelector('select').selectedOptions[0].innerText;
             const start = document.getElementById('start-date').value;
             const end = document.getElementById('end-date').value;
-            const birthDate = patient.birthDate;
+            const birthDate = patientMaster.birthDate;
 
             let patient = null;
             if (identifier) {
