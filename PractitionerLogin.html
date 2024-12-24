@@ -76,7 +76,7 @@
                 return;
             }
 
-            const response = await Patientlogin(id, sha256(password));
+            const response = await Practitionerlogin(id, sha256(password));
             if (!response.success || !response.data) {
                 alert("登入失敗");
                 return;
