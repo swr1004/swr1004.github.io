@@ -419,11 +419,19 @@ const userlogin = async (id, identifier) => {
     const response = await usePost(url, API_HEADERS);
     //console.log(response.entry.length);
     //console.log(response.total);
-    return {
-        success: response ? response.total > 0 : false,
-        data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
-        jwt: response.jwt
-    };
+    if (response.total == null){
+        return {
+            success : false,
+            data : null,
+            jwt : null
+        };
+    }else{
+        return {
+            success: response ? response.total > 0 : false,
+            data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
+            jwt: response.jwt
+        };
+    }
 }
 
 
@@ -432,11 +440,20 @@ const Patientlogin = async (id, identifier) => {
     const response = await usePost(url, API_HEADERS);
     console.log(response);
     //console.log(response.total);
-    return {
-        success: response ? response.total > 0 : false,
-        data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
-        jwt: response.jwt
-    };
+    if (response.total == null){
+        return {
+            success : false,
+            data : null,
+            jwt : null
+        };
+    }else{
+        return {
+            success: response ? response.total > 0 : false,
+            data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
+            jwt: response.jwt
+        };
+    }
+    
 }
 const getPersonById = async (id) => {
     const url = `${FHIR_BASE}/Person/${id}`;
