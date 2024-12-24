@@ -125,7 +125,7 @@ let personJSONobj = {
 
     let encounterJSONobj = {
 		"resourceType": "Encounter",
-		"status": "in-progress",
+		"status": "unknown",
 		"identifier": [ 
 			{
 				"system": "id",
@@ -136,6 +136,8 @@ let personJSONobj = {
 				"value": ""
 			}
 		],
+        "subject" : "",
+        "actualPeriod" :{"start":""}
 
     };
     //documenet reference

@@ -42,7 +42,7 @@
 
                 </li>
                 <li>
-                    <a href="/patient-booking.html">掛號</a>
+                    <a href="/patient-checkin.html">報到</a>
 
                 </li>
 
@@ -66,11 +66,11 @@
             </div>
             <div class="input-group">
                 <span>出生年月日</span>
-                <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="請輸入出生年月日"
+                <input type="datetime-local" class="form-control" id="bookdate" name="bookdate" placeholder="請輸入出生年月日"
                     value="1990-01-01">
             </div>
             <div class="text-center">
-                <button type="button" class="btn-main" onclick="checkin();">報到</button>
+                <button type="button" class="btn-main" onclick="booking();">報到</button>
             </div>
         </div>
     </div>
@@ -78,66 +78,52 @@
     <script src="/js/api.js"></script>
     <script src="/js/common.js"></script>
     <script>
+
+        
        const patientMaster = getPatient();
         document.addEventListener('DOMContentLoaded', () => {
             const login = checkLogin();
             if (login && patientMaster) {
                 setPatient();
             }
+            document.getElementById("bookdate").value = toLocalISOString(new Date());
         });
+
+        const toLocalISOString = (date) =>  {
+            const localDate = new Date(date - date.getTimezoneOffset() * 60000); //offset in milliseconds. Credit https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
+             // Optionally remove second/millisecond if needed
+             localDate.setSeconds(null);
+            localDate.setMilliseconds(null);
+            return localDate.toISOString().slice(0, -1);
+        }
 
         const setPatient = () => {
             document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
         }
-        const checkin = async () => {
+        const booking = async () => {
             const identifier = document.getElementById('identifier').value;
-            const birthdate = document.getElementById('birthdate').value;
-
-            if (identifier == '' || birthdate == '') {
-                alert('請輸入email及出生年月日');
+            const period = document.getElementById('bookdate').value;
+            const subject = "/Patient/" + document.getElementById('identifier').value;
+            if (identifier == '' || period == '') {
+                alert('請先登入及選擇看診日期');
                 return;
             }
+            encounterJSONobj.subject= subject;
+            encounterJSONobj.actualPeriod.start= period;
 
-            const response = await getPatientByIdentifierAndBirth(identifier, birthdate);
-            if (!response.success || !response.data) {
-                alert("查不到您的資料，請確認email及出生年月日是否正確");
+          
+             
+            let response = await createFHIRResource("Encounter", encounterJSONobj);
+            if (!response.success) {
+                alert(response.msg ? response.msg : '掛號失敗');
                 return;
+            }else{
+                console.log(response);
+                alert('掛號成功');
             }
+            
 
-            const patient = response.data;
-            const response2 = await getEncountersByPatient(patient.id);
-            if (!response2.success) {
-                alert("查詢掛號紀錄時發生錯誤，請稍後再試");
-                return;
-            }
-
-            const encounters = response2.data;
-            console.log(encounters)
-            if (encounters.length == 0) {
-                alert("無掛號紀錄");
-                return;
-            }
-
-            let uncheckin = encounters.filter(item => item.status == 'unknown');
-            if (uncheckin.length == 0) {
-                alert("您已報到");
-                return;
-            }
-
-            let error = false;
-            for (let i in uncheckin) {
-                let encounter = uncheckin[i];
-                let response = await updateEncounterStatus(encounter.id, 'planned');
-                if (!response.success) {
-                    error = true;
-                }
-            }
-
-            if (error) {
-                alert("報到時發生錯誤，請稍後再試");
-                return;
-            }
-            alert("報到成功");
+          
         }
     </script>
 </body>
