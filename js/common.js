@@ -36,12 +36,16 @@ const logout = () => {
     if (localStorage.getItem('login-role') === "patient") {
         loginUrl = "/PatientLogin.html";
     }
+    if (localStorage.getItem('login-role') === "practitioner") {
+        loginUrl = "/PractitionerLogin.html";
+    }
     localStorage.removeItem('login-id');
     localStorage.removeItem('login-role');
     localStorage.removeItem('patient');
     localStorage.removeItem('practitioner');
     localStorage.removeItem('token');
     localStorage.removeItem('person');
+    localStorage.removeItem('patient');
     window.location.href = loginUrl;
 }
 

@@ -97,6 +97,7 @@
                 birthDate : resource.birthDate
             };
 
+            localStorage.setItem('token',response.jwt);
             localStorage.setItem('practitioner', JSON.stringify(practitioner));
             localStorage.setItem('login-role', 'practitioner');
             localStorage.setItem('login-id', practitioner.id);
