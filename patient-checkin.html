@@ -149,6 +149,7 @@
            if (Array.isArray(uncheckin)){
             uncheckin.forEach((data) => {
                 let doctor = getPractitionerByEncounter(data.reference);
+                console.log("doctor"+doctor);
                 html += `
                     <tr>
                         <td>${data.book}</td>
