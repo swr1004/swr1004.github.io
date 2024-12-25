@@ -196,7 +196,7 @@
             practitionerJSONobj.birthDate = birthday;
             practitionerJSONobj.telecom[0].value = email;
 
-            //registerObj.Person = personJSONobj;
+            registerObj.Person = personJSONobj;
             registerObj.Practitioner = practitionerJSONobj;
              
             let response = await createPractitioner(registerObj);
