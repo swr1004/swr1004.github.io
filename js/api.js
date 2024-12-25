@@ -396,7 +396,7 @@ const getPractitionerByEncounter = async (url) => {
    }
     
    
-  console.log(datas1);
+
     return datas1;
 }
 
