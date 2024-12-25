@@ -149,7 +149,7 @@
            if (Array.isArray(uncheckin)){
             uncheckin.forEach((data) => {
                 let doctor = getPractitionerByEncounter(data.reference);
-                console.log("doctor"+doctor);
+                console.log("doctor1"+doctor.value);
                 html += `
                     <tr>
                         <td>${data.book}</td>
@@ -162,7 +162,7 @@
             });
            }else{
             let doctor = getPractitionerByEncounter(uncheckin.reference);
-           console.log("doctor"+doctor);
+           console.log("doctor"+doctor.value);
             html += `
                     <tr>
                         <td>${uncheckin.book}</td>
