@@ -187,15 +187,14 @@
                  return response.success ? response.data : [];
             });
             console.log(unknown);
-            const encounters = unknown.data;
-           
-            if (encounters.length == 0) {
+
+            if (unknown.length == 0) {
                 alert("無掛號紀錄");
                 return;
             }
 
-            for (let i in encounters) {
-                let encounter = encounters[i];
+            for (let i in unknown) {
+                let encounter = unknown[i];
                 let response = await updateEncounterStatus(id, 'planned');
                 if (!response.success) {
                     error = true;
