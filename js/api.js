@@ -460,6 +460,7 @@ const getEncountersByPatient = async (id) => {
             id: encounter.id,
             status: encounter.status,
             name: patient ? patient.name[0].text : "查無此人",
+            reference : encounters.participant[0].actor.reference,
             note: "",
         });
     }

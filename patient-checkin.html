@@ -148,7 +148,7 @@
            console.log(uncheckin);
            if (Array.isArray(uncheckin)){
             uncheckin.forEach((data) => {
-                let doctor = getPractitionerByEncounter(data.participant[0].actor.reference);
+                let doctor = getPractitionerByEncounter(data.resource.reference);
                 html += `
                     <tr>
                         <td>${data.resource.actualPeriod.start}</td>
