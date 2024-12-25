@@ -183,8 +183,18 @@
 
         const checkin2 = async (id) =>{
             let error = false;
-            for (let i in uncheckin) {
-                let encounter = uncheckin[i];
+            const unknown = await getEncounterDataByPatientAndStatus("unknown", id).then((response) => {
+                 return response.success ? response.data : [];
+            });
+            const encounters = unknown.data;
+           
+            if (encounters.length == 0) {
+                alert("無掛號紀錄");
+                return;
+            }
+
+            for (let i in encounters) {
+                let encounter = encounters[i];
                 let response = await updateEncounterStatus(id, 'planned');
                 if (!response.success) {
                     error = true;
