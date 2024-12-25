@@ -536,7 +536,7 @@ const createPatient = async (data) => {
     const url = `${API_HOST}/api/registerPatient`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
     console.log(response);
-    if (response.data ==undefined){
+    if (response.data !=undefined){
         return {
             success: false,
             msg: "註冊失敗" + response.msg,
@@ -559,7 +559,7 @@ const createPractitioner = async (data) => {
     const url = `${API_HOST}/api/regPractioner`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
     console.log(response);
-    if (response.data ==undefined){
+    if (response.data !=undefined){
         return {
             success: false,
             msg: "註冊失敗" + response.msg,
