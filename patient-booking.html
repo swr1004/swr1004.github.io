@@ -102,6 +102,7 @@
 
         
        const patientMaster = getPatient();
+       fillDataList();
         document.addEventListener('DOMContentLoaded', () => {
             const login = checkLogin();
             if (login && patientMaster) {
