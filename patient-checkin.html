@@ -152,7 +152,7 @@
                 html += `
                     <tr>
                         <td>${data.book}</td>
-                        <td>${doctor}</td>
+                        <td>`+doctor+`</td>
                         <td>${data.status}</td>
                         <td><button class="btn-main small ml-8" onclick="checkin2(${data.id})">報到</button></td>
                         
@@ -161,10 +161,11 @@
             });
            }else{
             let doctor = getPractitionerByEncounter(uncheckin.reference);
+           
             html += `
                     <tr>
                         <td>${uncheckin.book}</td>
-                        <td>${doctor}</td>
+                        <td>`+doctor+`</td>
                         <td>${uncheckin.status}</td>
                         <td><button class="btn-main small ml-8" onclick="checkin2(${uncheckin.id})">報到</button></td>
                     </tr>

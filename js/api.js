@@ -385,7 +385,7 @@ const getPractitionerByEncounter = async (url) => {
             return a.id - b.id;
         });
     }
-    console.log(datas);
+
     let datas1 = "";
     if (Array.isArray(datas)){
         datas.forEach((data) => {
@@ -404,7 +404,7 @@ const getPractitionerByEncounter = async (url) => {
         //});
    }
     
-   console.log("datas1 "+datas1);
+   
 
     return datas1;
 }
