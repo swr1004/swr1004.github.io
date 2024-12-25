@@ -389,24 +389,19 @@ const getPractitionerByEncounter = async (url) => {
     let datas1 = "";
     if (Array.isArray(datas)){
         datas.forEach((data) => {
-            datas1 =   data.name[0].text +"("+data.id+")";
-           // datas1.push({
-            //    id: data.resource.id,
-           //     name: data.name[0].text
-           // });    
+            datas1.push({
+                name: data.name[0].text +"("+data.id+")"
+            });    
         });
     }else{
-        
-        datas1 =   datas.name[0].text +"("+datas.id+")";
-       // datas1.push({
-       //     id: datas.resource.id,
-        //    name: datas.name[0].text
-        //});
+        datas1.push({
+            name: datas.name[0].text +"("+datas.id+")"
+        });
    }
     
    
 
-    return datas1+"";
+    return datas1;
 }
 
 const getEncounterDataByPatientAndStatus = async (status, id) => {
