@@ -160,7 +160,7 @@
                 `;
             });
            }else{
-            let doctor = getPractitionerByEncounter(uncheckin.participant[0].actor.reference);
+            let doctor = getPractitionerByEncounter(uncheckin.reference);
             html += `
                     <tr>
                         <td>${uncheckin.book}</td>

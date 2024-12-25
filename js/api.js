@@ -382,6 +382,7 @@ const getPractitionerByEncounter = async (url) => {
                         return a.id - b.id;
                    });
                 }
+                console.log(datas);
     let datas1 = "";
     if (Array.isArray(datas)){
         datas.forEach((data) => {
