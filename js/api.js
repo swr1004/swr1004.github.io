@@ -370,6 +370,40 @@ const getEncountersByPractitioner = async (id) => {
     };
 }
 
+
+const getPractitionerByEncounter = async (url) => {
+    // get doctor or nurse
+    const response = await getFHIRResource(url).then((response) => {
+        return response.success ? response.data : [];
+    });
+    let datas =response.data ;
+                if (Array.isArray(response.data)){
+                   datas.sort((a, b) => {
+                        return a.id - b.id;
+                   });
+                }
+    let datas1 = "";
+    if (Array.isArray(datas)){
+        datas.forEach((data) => {
+            datas1 =   data.name[0].text +"("+data.name[0].text+")";
+           // datas1.push({
+            //    id: data.resource.id,
+           //     name: data.name[0].text
+           // });    
+        });
+    }else{
+        datas1 =   datas.name[0].text +"("+datas.name[0].text+")";
+       // datas1.push({
+       //     id: datas.resource.id,
+        //    name: datas.name[0].text
+        //});
+   }
+    
+    
+
+    return datas1;
+}
+
 const getEncounterDataByPatientAndStatus = async (status, id) => {
     const url = `${FHIR_BASE}/Encounter?status=${status}&patient=${id}`;
     API_HEADERS.Authorization = localStorage.getItem('token');

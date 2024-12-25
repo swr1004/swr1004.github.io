@@ -70,9 +70,26 @@
                     value="1990-01-01">
             </div>
             <div class="text-center">
-                <button type="button" class="btn-main" onclick="checkin();">報到</button>
+                <button type="button" class="btn-main" onclick="query();">查詢未報到</button>
             </div>
         </div>
+
+        <hr/>
+            <div class="mt-15">
+                <div style="overflow-x: auto;">
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>時間</th>
+                                <th>醫師</th>
+                                <th>狀態</th>
+                                <th>報到</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
     </div>
 
     <script src="/js/api.js"></script>
@@ -88,6 +105,93 @@
 
         const setPatient = () => {
             document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+        }
+
+        const query = async () => {
+            const identifier = document.getElementById('identifier').value;
+            const birthdate = document.getElementById('birthdate').value;
+
+            if (identifier == '' || birthdate == '') {
+                alert('請輸入email及出生年月日');
+                return;
+            }
+
+            const response = await getPatientByIdentifierAndBirth(identifier, birthdate);
+            if (!response.success || !response.data) {
+                alert("查不到您的資料，請確認email及出生年月日是否正確");
+                return;
+            }
+
+            const patient = response.data;
+            const response2 = await getEncountersByPatient(patient.id);
+            if (!response2.success) {
+                alert("查詢掛號紀錄時發生錯誤，請稍後再試");
+                return;
+            }
+
+            const encounters = response2.data;
+            
+            if (encounters.length == 0) {
+                alert("無掛號紀錄");
+                return;
+            }
+
+            let uncheckin = encounters.filter(item => item.status == 'unknown');
+            if (uncheckin.length == 0) {
+                alert("您已報到");
+                return;
+            }
+
+            const tbody = document.getElementById('tbody');
+            let html = '';
+ 
+           
+           if (Array.isArray(uncheckin)){
+            uncheckin.forEach((data) => {
+                let doctor = getPractitionerByEncounter(data.participant[0].actor.reference);
+                html += `
+                    <tr>
+                        <td>${data.resource.actualPeriod.start}</td>
+                        <td>${doctor}</td>
+                        <td>${data.resource.status}</td>
+                        <td><button class="btn-main small ml-8" onclick="checkin2(${data.id})">報到</button></td>
+                        
+                    </tr>
+                `;
+            });
+           }else{
+            let doctor = getPractitionerByEncounter(uncheckin.participant[0].actor.reference);
+            html += `
+                    <tr>
+                        <td>${uncheckin.resource.actualPeriod.start}</td>
+                        <td>${doctor}</td>
+                        <td>${uncheckin.resource.status}</td>
+                        <td><button class="btn-main small ml-8" onclick="checkin2(${uncheckin.id})">報到</button></td>
+                    </tr>
+                `;
+           }
+            //alert(html);
+            tbody.innerHTML = html;
+
+           
+        }
+
+        const checkin2 = async (id) =>{
+            let error = false;
+            for (let i in uncheckin) {
+                let encounter = uncheckin[i];
+                let response = await updateEncounterStatus(id, 'planned');
+                if (!response.success) {
+                    error = true;
+                }
+            }
+
+            if (error) {
+                alert("報到時發生錯誤，請稍後再試");
+                return;
+            }
+            alert("報到成功");
+            query();
         }
         const checkin = async () => {
             const identifier = document.getElementById('identifier').value;
