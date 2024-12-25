@@ -456,11 +456,12 @@ const getEncountersByPatient = async (id) => {
         let encounter = encounters[i];
         let response2 = await getPatientById(encounter.patientId);
         let patient = response2.success && response2.data ? response2.data : null;
+        console.log(encounter);
         datas.push({
             id: encounter.id,
             status: encounter.status,
             name: patient ? patient.name[0].text : "查無此人",
-            reference : encounters.participant[0] ? encounters.participant[0].actor.reference : "",
+            reference : encounter.participant[0] ? encounter.participant[0].actor.reference : "",
             note: "",
         });
     }
