@@ -147,9 +147,9 @@
  
            //console.log(uncheckin);
            if (Array.isArray(uncheckin)){
-            uncheckin.forEach((data) => {
-                const doctor =  getPractitionerByEncounter(data.reference);
-                console.log("doctor1"+doctor);
+            for (let i in uncheckin) {
+                let data = uncheckin[i];
+                let doctor =  await getPractitionerByEncounter(data.reference);
                 html += `
                     <tr>
                         <td>${data.book}</td>
@@ -159,9 +159,10 @@
                         
                     </tr>
                 `;
-            });
+            }
+            
            }else{
-            let doctor = getPractitionerByEncounter(uncheckin.reference);
+            let doctor = await getPractitionerByEncounter(uncheckin.reference);
            console.log("doctor"+doctor);
             html += `
                     <tr>
@@ -178,35 +179,7 @@
            
         }
 
-        const getPractitionerByEncounter = async (url) => {
-    // get doctor or nurse
-    const response = await getFHIRResourceById(url);
-    //const response = await getFHIRResource(url).then((response) => {
         
-    //    return response.success ? response.data : [];
-    //});
-    
-    let datas =response.data ;
-     if (Array.isArray(response.data)){
-        datas.sort((a, b) => {
-            return a.id - b.id;
-        });
-    }
-
-    let datas1 =  "";
-    if (Array.isArray(datas)){
-        datas.forEach((data) => {
-            datas1 = data.name[0].text +"("+data.id+")";
-           
-        });
-    }else{
-        datas1 =  datas.name[0].text +"("+datas.id+")";
-   }
-    
-   
-  console.log(datas1);
-    return datas1;
-}
 
         const checkin2 = async (id) =>{
             let error = false;
