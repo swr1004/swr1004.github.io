@@ -198,7 +198,7 @@
 
             //registerObj.Person = personJSONobj;
             registerObj.Practitioner = practitionerJSONobj;
-            response.console(registerObj);
+            console.log(registerObj);
             let response = await createPractitioner(registerObj);
             if (!response.success) {
                 alert(response.msg ? response.msg : '註冊失敗');
