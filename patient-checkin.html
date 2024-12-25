@@ -110,7 +110,8 @@
         const query = async () => {
             const identifier = document.getElementById('identifier').value;
             const birthdate = document.getElementById('birthdate').value;
-
+            const tbody = document.getElementById('tbody');
+            tbody.innerHTML = "";
             if (identifier == '' || birthdate == '') {
                 alert('請輸入email及出生年月日');
                 return;
@@ -142,7 +143,7 @@
                 return;
             }
 
-            const tbody = document.getElementById('tbody');
+           
             let html = '';
  
            //console.log(uncheckin);
