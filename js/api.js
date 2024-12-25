@@ -373,9 +373,9 @@ const getEncountersByPractitioner = async (id) => {
 
 const getPractitionerByEncounter = async (url) => {
     // get doctor or nurse
-    
+    console.log("url "+response  );
     const response = await getFHIRResource(url).then((response) => {
-        console.log("url "+response  );
+        
         return response.success ? response.data : [];
     });
     
@@ -810,7 +810,7 @@ const getFHIRResource = async (resource) => {
     const url = `${FHIR_BASE}/`+resource;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
-    console.log("getFHIRResource "+response);
+    
     if (response.entry ==undefined){
         return {
             success: false,
