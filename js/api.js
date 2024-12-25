@@ -406,7 +406,9 @@ const getPractitionerByEncounter = async (url) => {
     
    
 
-    return datas1;
+    return {
+        data: datas1
+        }
 }
 
 const getEncounterDataByPatientAndStatus = async (status, id) => {
@@ -611,7 +613,7 @@ const createPractitioner = async (data) => {
 
     const url = `${API_HOST}/api/regPractioner`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
-    console.log(response);
+    //console.log(response);
     if (response.data !=undefined){
         return {
             success: false,

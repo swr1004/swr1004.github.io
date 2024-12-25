@@ -148,12 +148,12 @@
            //console.log(uncheckin);
            if (Array.isArray(uncheckin)){
             uncheckin.forEach((data) => {
-                let doctor = getPractitionerByEncounter(data.reference);
-                console.log("doctor1"+doctor.value);
+                let doctor =  getPractitionerByEncounter(data.reference);
+                console.log("doctor1"+doctor.data);
                 html += `
                     <tr>
                         <td>${data.book}</td>
-                        <td>`+doctor+`</td>
+                        <td>`+doctor.data+`</td>
                         <td>${data.status}</td>
                         <td><button class="btn-main small ml-8" onclick="checkin2(${data.id})">報到</button></td>
                         
@@ -162,11 +162,11 @@
             });
            }else{
             let doctor = getPractitionerByEncounter(uncheckin.reference);
-           console.log("doctor"+doctor.value);
+           console.log("doctor"+doctor.data);
             html += `
                     <tr>
                         <td>${uncheckin.book}</td>
-                        <td>`+doctor+`</td>
+                        <td>`+doctor.data+`</td>
                         <td>${uncheckin.status}</td>
                         <td><button class="btn-main small ml-8" onclick="checkin2(${uncheckin.id})">報到</button></td>
                     </tr>
