@@ -374,11 +374,12 @@ const getEncountersByPractitioner = async (id) => {
 const getPractitionerByEncounter = async (url) => {
     // get doctor or nurse
     console.log("url "+url  );
-    const response = await getFHIRResource(url).then((response) => {
+    const response = await getFHIRResource(url);
+    //const response = await getFHIRResource(url).then((response) => {
         
-        return response.success ? response.data : [];
-    });
-    
+    //    return response.success ? response.data : [];
+    //});
+    console.log("response "+response  );
     let datas =response.data ;
      if (Array.isArray(response.data)){
         datas.sort((a, b) => {
