@@ -374,7 +374,7 @@ const getEncountersByPractitioner = async (id) => {
 const getPractitionerByEncounter = async (url) => {
     // get doctor or nurse
     console.log("url "+url  );
-    const response = await getFHIRResource(url);
+    const response = await getFHIRResourceById(url);
     //const response = await getFHIRResource(url).then((response) => {
         
     //    return response.success ? response.data : [];
@@ -806,12 +806,20 @@ const getOrganizationByName = async (name) => {
     };
 }
 
-
+const getFHIRResourceById = async (resource) => {
+    const url = `${FHIR_BASE}/`+resource;
+    API_HEADERS.Authorization = localStorage.getItem('token');
+    const response = await useGet(url, API_HEADERS);
+    const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
+    return {
+        success: success,
+        data: success ? response : null
+    };
+}
 const getFHIRResource = async (resource) => {
     const url = `${FHIR_BASE}/`+resource;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
-    console.log('response.entry'+response.entry);
     if (response.entry ==undefined){
         return {
             success: false,
