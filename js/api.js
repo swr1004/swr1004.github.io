@@ -811,7 +811,7 @@ const getFHIRResource = async (resource) => {
     const url = `${FHIR_BASE}/`+resource;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
-    console.log('getFHIRResource'+response);
+    console.log('response.entry'+response.entry);
     if (response.entry ==undefined){
         return {
             success: false,
