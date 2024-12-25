@@ -373,7 +373,7 @@ const getEncountersByPractitioner = async (id) => {
 
 const getPractitionerByEncounter = async (url) => {
     // get doctor or nurse
-    console.log("url "+response  );
+    console.log("url "+url  );
     const response = await getFHIRResource(url).then((response) => {
         
         return response.success ? response.data : [];
