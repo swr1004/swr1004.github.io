@@ -376,13 +376,14 @@ const getPractitionerByEncounter = async (url) => {
     const response = await getFHIRResource(url).then((response) => {
         return response.success ? response.data : [];
     });
+    console.log(response.data );
     let datas =response.data ;
-                if (Array.isArray(response.data)){
-                   datas.sort((a, b) => {
-                        return a.id - b.id;
-                   });
-                }
-                console.log(datas);
+     if (Array.isArray(response.data)){
+        datas.sort((a, b) => {
+            return a.id - b.id;
+        });
+    }
+    console.log(datas);
     let datas1 = "";
     if (Array.isArray(datas)){
         datas.forEach((data) => {
