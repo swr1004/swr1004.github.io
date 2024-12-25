@@ -211,7 +211,12 @@
             i = 0,
             //len = optionList.length,
             dl = document.createElement('datalist');
-
+            let datas =response.data ;
+                if (Array.isArray(response.data)){
+                   datas.sort((a, b) => {
+                        return a.id - b.id;
+                   });
+                }
             dl.id = 'practitionerlst';
             if (Array.isArray(datas)){
             datas.forEach((data) => {
