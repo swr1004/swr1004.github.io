@@ -371,38 +371,7 @@ const getEncountersByPractitioner = async (id) => {
 }
 
 
-const getPractitionerByEncounter = async (url) => {
-    // get doctor or nurse
-    const response = await getFHIRResourceById(url);
-    //const response = await getFHIRResource(url).then((response) => {
-        
-    //    return response.success ? response.data : [];
-    //});
-    
-    let datas =response.data ;
-     if (Array.isArray(response.data)){
-        datas.sort((a, b) => {
-            return a.id - b.id;
-        });
-    }
 
-    let datas1 =  [];;
-    if (Array.isArray(datas)){
-        datas.forEach((data) => {
-            datas1.push({
-                name: data.name[0].text +"("+data.id+")"
-            });    
-        });
-    }else{
-        datas1.push({
-            name: datas.name[0].text +"("+datas.id+")"
-        });
-   }
-    
-   
-
-    return datas1;
-}
 
 const getEncounterDataByPatientAndStatus = async (status, id) => {
     const url = `${FHIR_BASE}/Encounter?status=${status}&patient=${id}`;
