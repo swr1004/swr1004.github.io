@@ -51,11 +51,11 @@ let personJSONobj = {
     let practitionerJSONobj = {
 		"resourceType": "Practitioner",
 		"active": "true",
-		"identifier": [ 
+		"identifier": [
 			{
 				"system": "UserID",
 				"value": ""
-			}, 
+			},
 			{
 				"system": "Password",
 				"value": ""
