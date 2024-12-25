@@ -69,6 +69,12 @@
                 <input type="datetime-local" class="form-control" id="bookdate" name="bookdate" placeholder="請輸入出生年月日"
                     value="1990-01-01">
             </div>
+            <div class="input-group">
+                <span>掛號醫師</span>
+                <input name="practitioner" list="datalist" />
+                <datalist id="practitionerlst"></datalist>
+            </div>
+            
             <div class="text-center">
                 <button type="button" class="btn-main" onclick="booking();">報到</button>
             </div>
@@ -195,6 +201,32 @@
            }
             //alert(html);
             tbody.innerHTML = html;
+        }
+
+        const fillDataList= async () => {
+            let response = await getFHIRResource("Practitioner?identifier=doctor");
+            var container = document.getElementById('patient'),
+            i = 0,
+            len = optionList.length,
+            dl = document.createElement('datalist');
+
+            dl.id = 'practitionerlst';
+            if (Array.isArray(datas)){
+            datas.forEach((data) => {
+                var option = document.createElement('option');
+               option.value = data.resource.id;
+               option.text = data.resource.name[0].text;
+               dl.appendChild(option);
+                
+            });
+           }else{
+            var option = document.createElement('option');
+               option.value = datas.resource.id;
+               option.text = datas.resource.name[0].text;
+               dl.appendChild(option);
+
+           }
+            container.appendChild(dl);
         }
     </script>
 </body>
