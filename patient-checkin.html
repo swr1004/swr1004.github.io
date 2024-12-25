@@ -169,7 +169,7 @@
                         <td>${uncheckin.book}</td>
                         <td>`+doctor+`</td>
                         <td>${uncheckin.status}</td>
-                        <td><button class="btn-main small ml-8" onclick="checkin2(${patientMaster.id})">報到</button></td>
+                        <td><button class="btn-main small ml-8" onclick="checkin2(${uncheckin.id})">報到</button></td>
                     </tr>
                 `;
            }
@@ -183,7 +183,7 @@
 
         const checkin2 = async (id) =>{
             let error = false;
-            const unknown = await getEncounterDataByPatientAndStatus("unknown", id).then((response) => {
+            const unknown = await getEncounterDataByPatientAndStatus("unknown", patientMaster.id).then((response) => {
                  return response.success ? response.data : [];
             });
             console.log(unknown);
