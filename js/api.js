@@ -406,9 +406,7 @@ const getPractitionerByEncounter = async (url) => {
     
    
 
-    return {
-        data: datas1
-        }
+    return datas1+"";
 }
 
 const getEncounterDataByPatientAndStatus = async (status, id) => {
