@@ -370,7 +370,6 @@ const getEncountersByPractitioner = async (id) => {
     };
 }
 
-
 const getPractitionerByEncounter = async (url) => {
     // get doctor or nurse
     const response = await getFHIRResourceById(url);
@@ -384,7 +383,7 @@ const getPractitionerByEncounter = async (url) => {
         datas.sort((a, b) => {
             return a.id - b.id;
         });
-    }日
+    }
 
     let datas1 =  "";
     if (Array.isArray(datas)){
@@ -399,6 +398,35 @@ const getPractitionerByEncounter = async (url) => {
    
   console.log(datas1);
     return datas1;
+}
+
+const getEncounterDataByPatientAndStatus = async (status, id) => {
+    const url = `${FHIR_BASE}/Encounter?status=${status}&patient=${id}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
+    const response = await useGet(url, API_HEADERS);
+    const success = response ? true : false;
+    let datas = [];
+    if (success) {
+        for (let i in response.entry) {
+            let encounter = response.entry[i].resource;
+            let patientId = encounter.subject.reference.split('/')[1];
+            let referenceurl = encounter.participant ? encounter.participant[0].actor.reference :"";
+            let bookdate = encounter.actualPeriod ?encounter.actualPeriod.start : "";
+            datas.push({
+                id: encounter.id,
+                status: encounter.status,
+                reference: referenceurl,
+                patientId,
+                note: "",
+                book : bookdate,
+            });
+        }
+    }
+
+    return {
+        success: success,
+        data: datas
+    };
 }
 
 const getEncountersByPatient = async (id) => {
