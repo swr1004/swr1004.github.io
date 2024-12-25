@@ -71,7 +71,7 @@
             </div>
             <div class="input-group">
                 <span>掛號醫師</span>
-                <input name="practitioner" id="practitioner"  list="practitionerlst" />
+                <input id="practitioner"  list="practitionerlst" />
                
             </div>
             
@@ -127,6 +127,7 @@
         const booking = async () => {
             const identifier = document.getElementById('identifier').value;
             const period = document.getElementById('bookdate').value;
+            const practitioner = document.getElementById('practitioner').value;
             const subject = "Patient/" +patientMaster.id;
             if (identifier == '' || period == '') {
                 alert('請先登入及選擇看診日期');
@@ -135,6 +136,7 @@
             encounterJSONobj.subject.reference= subject;
             encounterJSONobj.actualPeriod.start= period;
             encounterJSONobj.identifier[0].value="Patient";
+            encounterJSONobj.participant[0].actor.reference = "Practitioner/"+practitioner;
           
              
             let response = await createFHIRResource("Encounter", encounterJSONobj);

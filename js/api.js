@@ -145,6 +145,9 @@ let personJSONobj = {
 				"value": ""
 			}
 		],
+        "participant":[
+            {"actor":{"reference":""}}
+        ],
         "subject" : {"reference":""},
         "actualPeriod" :{"start":""}
 
