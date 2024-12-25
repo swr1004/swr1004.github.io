@@ -155,7 +155,7 @@
                         <td>${data.book}</td>
                         <td>`+doctor+`</td>
                         <td>${data.status}</td>
-                        <td><button class="btn-main small ml-8" onclick="checkin2(${uncheckin.id})">報到</button></td>
+                        <td><button class="btn-main small ml-8" onclick="checkin2(${data.id})">報到</button></td>
                         
                     </tr>
                 `;
@@ -163,7 +163,7 @@
             
            }else{
             let doctor = await getPractitionerByEncounter(uncheckin.reference);
-           console.log("doctor"+doctor);
+          // console.log("doctor"+doctor);
             html += `
                     <tr>
                         <td>${uncheckin.book}</td>
