@@ -151,9 +151,9 @@
                 let doctor = getPractitionerByEncounter(data.reference);
                 html += `
                     <tr>
-                        <td>${data.resource.actualPeriod.start}</td>
+                        <td>${data.book}</td>
                         <td>${doctor}</td>
-                        <td>${data.resource.status}</td>
+                        <td>${data.status}</td>
                         <td><button class="btn-main small ml-8" onclick="checkin2(${data.id})">報到</button></td>
                         
                     </tr>
@@ -163,9 +163,9 @@
             let doctor = getPractitionerByEncounter(uncheckin.participant[0].actor.reference);
             html += `
                     <tr>
-                        <td>${uncheckin.resource.actualPeriod.start}</td>
+                        <td>${uncheckin.book}</td>
                         <td>${doctor}</td>
-                        <td>${uncheckin.resource.status}</td>
+                        <td>${uncheckin.status}</td>
                         <td><button class="btn-main small ml-8" onclick="checkin2(${uncheckin.id})">報到</button></td>
                     </tr>
                 `;
