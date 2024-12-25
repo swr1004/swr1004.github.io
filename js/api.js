@@ -414,7 +414,7 @@ const getEncounterDataByPatientAndStatus = async (status, id) => {
         for (let i in response.entry) {
             let encounter = response.entry[i].resource;
             let patientId = encounter.subject.reference.split('/')[1];
-            let referenceurl = encounter.participant[0] ? encounter.participant[0].actor.reference :"";
+            let referenceurl = encounter.participant ? encounter.participant[0].actor.reference :"";
             datas.push({
                 id: encounter.id,
                 status: encounter.status,
