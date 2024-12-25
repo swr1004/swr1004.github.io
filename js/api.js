@@ -373,13 +373,12 @@ const getEncountersByPractitioner = async (id) => {
 
 const getPractitionerByEncounter = async (url) => {
     // get doctor or nurse
-    console.log("url "+url  );
     const response = await getFHIRResourceById(url);
     //const response = await getFHIRResource(url).then((response) => {
         
     //    return response.success ? response.data : [];
     //});
-    console.log("response "+response  );
+    
     let datas =response.data ;
      if (Array.isArray(response.data)){
         datas.sort((a, b) => {
@@ -397,6 +396,7 @@ const getPractitionerByEncounter = async (url) => {
            // });    
         });
     }else{
+        
         datas1 =   datas.name[0].text +"("+datas.name[0].text+")";
        // datas1.push({
        //     id: datas.resource.id,
