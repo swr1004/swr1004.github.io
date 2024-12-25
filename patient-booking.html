@@ -71,7 +71,7 @@
             </div>
             <div class="input-group">
                 <span>掛號醫師</span>
-                <input name="practitioner" list="datalist" />
+                <input name="practitioner" id="practitioner"  list="datalist" />
                 <datalist id="practitionerlst"></datalist>
             </div>
             
@@ -207,7 +207,7 @@
 
         const fillDataList= async () => {
             let response = await getFHIRResource("Practitioner?identifier=doctor");
-            var container = document.getElementById('patient'),
+            var container = document.getElementById('practitioner'),
             i = 0,
             //len = optionList.length,
             dl = document.createElement('datalist');
