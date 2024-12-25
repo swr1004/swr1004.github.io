@@ -386,7 +386,7 @@ const getPractitionerByEncounter = async (url) => {
         });
     }
 
-    let datas1 = "";
+    let datas1 =  [];;
     if (Array.isArray(datas)){
         datas.forEach((data) => {
             datas1.push({
