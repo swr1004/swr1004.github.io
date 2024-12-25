@@ -415,12 +415,14 @@ const getEncounterDataByPatientAndStatus = async (status, id) => {
             let encounter = response.entry[i].resource;
             let patientId = encounter.subject.reference.split('/')[1];
             let referenceurl = encounter.participant ? encounter.participant[0].actor.reference :"";
+            let bookdate = encounter.actualPeriod ?encounter.actualPeriod.start : "";
             datas.push({
                 id: encounter.id,
                 status: encounter.status,
                 reference: referenceurl,
                 patientId,
                 note: "",
+                book : bookdate,
             });
         }
     }
@@ -460,6 +462,7 @@ const getEncountersByPatient = async (id) => {
         let patient = response2.success && response2.data ? response2.data : null;
         console.log(encounter);
         datas.push({
+            book : encounter.book,
             id: encounter.id,
             status: encounter.status,
             name: patient ? patient.name[0].text : "查無此人",
