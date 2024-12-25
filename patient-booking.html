@@ -102,7 +102,7 @@
 
         
        const patientMaster = getPatient();
-       fillDataList();
+       
         document.addEventListener('DOMContentLoaded', () => {
             const login = checkLogin();
             if (login && patientMaster) {
@@ -110,6 +110,7 @@
             }
             document.getElementById("bookdate").value = toLocalISOString(new Date());
             query();
+            fillDataList();
         });
 
         const toLocalISOString = (date) =>  {
