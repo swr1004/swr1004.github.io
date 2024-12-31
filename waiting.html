@@ -148,7 +148,7 @@
                         <td>
                             ${data.status === `planned` ? `<button class="btn-main small" onclick="doProgress(${data.id})">看診</button>` : ``}
                             ${data.status === `in-progress` ? `<button class="btn-main small" style="max-width: 120px;" onclick="window.location.href='/uploadDRef.html?en=${data.id}';">上傳檢驗報告</button>` : ``}
-                            ${data.status === `in-progress` ? `<button class="btn-main small ml-8" onclick="doComplete(${data.id})">看診完成</button>` : ``}
+                            ${data.status === `in-progress` ? `<button class="btn-main small ml-8" style="max-width: 120px;" onclick="doComplete(${data.id})">看診完成</button>` : ``}
                         </td>
                     </tr>
                 `;
