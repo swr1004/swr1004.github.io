@@ -168,7 +168,9 @@
                let mytoekn = localStorage.getItem('token');
                document.getElementById("mytoken").value = mytoekn;
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('1');
             document.getElementById("entrydate").value = toLocalDateString1(new Date());
+            console.log('2');
             let mytoekn =   getQueryString()["token"];
             if (mytoekn !=null){
                 localStorage.setItem('token',mytoekn);
@@ -193,8 +195,8 @@
     // Optionally remove second/millisecond if needed
     localDate.setSeconds(null);
     localDate.setMilliseconds(null);
-    console.log(localDate + ' : ' +localDate.toLocaleDateString());
-    return localDate.toLocaleDateString();
+    console.log(localDate + ' : ' +localDate.toLocaleDateString().slice(0, -1));
+    return localDate.toLocaleDateString().slice(0, -1);;
   }
 
         
