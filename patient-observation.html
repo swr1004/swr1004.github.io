@@ -168,7 +168,7 @@
                let mytoekn = localStorage.getItem('token');
                document.getElementById("mytoken").value = mytoekn;
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById("entrydate").value = toLocalDateString(new Date());
+            document.getElementById("entrydate").value = toLocalDateString1(new Date());
             let mytoekn =   getQueryString()["token"];
             if (mytoekn !=null){
                 localStorage.setItem('token',mytoekn);
@@ -187,7 +187,15 @@
         });
 
  
-
+        const toLocalDateString1= (date) => {
+    const localDate = new Date(date - date.getTimezoneOffset() * 60000); //offset in milliseconds. Credit https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
+   
+    // Optionally remove second/millisecond if needed
+    localDate.setSeconds(null);
+    localDate.setMilliseconds(null);
+    //console.log(localDate + ' : ' +localDate.toLocaleDateString());
+    return localDate.toLocaleDateString();
+  }
 
         
         const setPatient = () => {

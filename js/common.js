@@ -95,6 +95,6 @@ const toLocalISOString= (date) => {
     // Optionally remove second/millisecond if needed
     localDate.setSeconds(null);
     localDate.setMilliseconds(null);
-    console.log(localDate + ' : ' +localDate.toLocaleDateString());
+    //console.log(localDate + ' : ' +localDate.toLocaleDateString());
     return localDate.toLocaleDateString();
   }
