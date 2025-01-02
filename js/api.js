@@ -170,7 +170,48 @@ let personJSONobj = {
         "context": [{
             "reference": ""
         }]
-    };
+    }; 
+    //https://build.fhir.org/ig/cctwFHIRterm/MOHW_TWCoreIG_Build/examples.html
+    //身高 8302-2 Body height, unit cm, code cm
+    //體重 29463-7 Body weight, unit kg, code kg
+    //體溫 8310-5 Body temperature, unit Cel, code Cel
+    //心率 8867-4 Heart rate, unit beats/min, code /min
+    let observationobj = {
+        "resourceType": "Observation",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ],
+            "text": "Vital Signs"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8480-6",
+              "display": "Systolic blood pressure"
+            }
+          ],
+          "text": "Systolic Blood Pressure"
+        },
+        "subject": {
+          "reference": "Patient/xxxx"
+        },
+        "effectiveDateTime": "2025-01-01",
+        "valueQuantity": {
+          "value": 120,
+          "unit": "mmHg",
+          "system": "http://unitsofmeasure.org",
+          "code": "mm[Hg]"
+        }
+      };
 	
 	
     const  fileGet = async (myfile) => {

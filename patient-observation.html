@@ -84,7 +84,37 @@
                 </li>
             </div>
         </div>
-        
+        <h1 class="mt-20 text-center">上傳監測資料</h1>
+        <div class="card">
+            <div class="input-group">
+                <span>掛號醫師</span>
+                <select id="loniccode">
+                    <option value="8480-6">血壓(收縮壓) Blood Pressure</option>
+                    <option value="8302-2">身高 Body height</option>
+                    <option value="29463-7">體重 Body weight</option>
+                    <option value="8310-5">體溫 Body temperature</option>
+                    <option value="8867-4">心率 Heart rate</option>
+                </select>
+               
+            </div>
+            <div class="input-group">
+                
+                    <span>數值</span>
+                <input type="text" class="form-control" id="value" name="value" placeholder="請輸入數字" >
+            </div>
+            <div class="input-group">
+                <span>監測日期</span>
+                <input type="datetime-local" class="form-control" id="entrydate" name="entrydate" 
+                    value="1990-01-01">
+            </div>
+
+            
+            <div class="text-center">
+                <button type="button" class="btn-main" onclick="upload();">掛號</button>
+            </div>
+
+            <hr/>
+        </div>
         <hr />
         <div class="mt-15">
             <div class="card">
@@ -138,6 +168,7 @@
                let mytoekn = localStorage.getItem('token');
                document.getElementById("mytoken").value = mytoekn;
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById("entrydate").value = toLocalISOString(new Date());
             let mytoekn =   getQueryString()["token"];
             if (mytoekn !=null){
                 localStorage.setItem('token',mytoekn);
@@ -154,6 +185,9 @@
             }
             
         });
+
+ 
+
 
         
         const setPatient = () => {
