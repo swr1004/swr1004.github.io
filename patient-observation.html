@@ -88,7 +88,7 @@
         <div class="card">
             <div class="input-group">
                 <span>監測累別</span>
-                <select id="loniccode">
+                <select id="loniccode" onchange="changeunit()">
                     <option value="8480-6">血壓(收縮壓) Blood Pressure</option>
                     <option value="8302-2">身高 Body height</option>
                     <option value="29463-7">體重 Body weight</option>
@@ -100,7 +100,7 @@
             <div class="input-group">
                 
                 <span>數值</span>
-                <input type="text" class="form-control" id="value" name="value" placeholder="請輸入數字" >
+                <input type="text" class="form-control" id="value" name="value" placeholder="請輸入數字" ><span id="unit"></span>
             </div>
             <div class="input-group">
                 <span>監測日期</span>
@@ -168,9 +168,9 @@
                let mytoekn = localStorage.getItem('token');
                document.getElementById("mytoken").value = mytoekn;
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('1');
-            document.getElementById("entrydate").value = toLocalDateString1(new Date());
-            console.log('2');
+           
+            document.getElementById("entrydate").value = toLocalDateString(new Date());
+            document.getElementById('unit').innerText = '';
             let mytoekn =   getQueryString()["token"];
             if (mytoekn !=null){
                 localStorage.setItem('token',mytoekn);
@@ -188,17 +188,26 @@
             
         });
 
- 
-        const toLocalDateString1= (date) => {
-    const localDate = new Date(date - date.getTimezoneOffset() * 60000); //offset in milliseconds. Credit https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
-   
-    // Optionally remove second/millisecond if needed
-    localDate.setSeconds(null);
-    localDate.setMilliseconds(null);
-    console.log(localDate + ' : ' +localDate.toLocaleDateString());
-    return localDate.toLocaleDateString();;
-  }
+        const changeunit = () => {
+            const changeunit = () => {
+            let type = document.getElementById('loniccode').value;
+            if (value==undefined){
+                document.getElementById('unit').innerText = '';
+            }else if(value=='8480-6'){
+                document.getElementById('unit').innerText = 'mmHg';
+            }else if(value=='8302-2'){
+                document.getElementById('unit').innerText = 'cm';
+            }else if(value=='29463-7'){
+                document.getElementById('unit').innerText = 'kg';
+            }else if(value=='8310-5'){
+                document.getElementById('unit').innerText = 'Cel';
+            }else if(value=='8867-4'){
+                document.getElementById('unit').innerText = 'beats/min';
+            }else{
 
+            }
+            
+        }
         
         const setPatient = () => {
             document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
