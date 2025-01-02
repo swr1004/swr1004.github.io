@@ -168,7 +168,7 @@
                let mytoekn = localStorage.getItem('token');
                document.getElementById("mytoken").value = mytoekn;
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById("entrydate").value = new Date();
+            document.getElementById("entrydate").value = toLocalDateString(new Date());
             let mytoekn =   getQueryString()["token"];
             if (mytoekn !=null){
                 localStorage.setItem('token',mytoekn);
