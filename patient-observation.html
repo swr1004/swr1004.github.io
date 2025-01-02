@@ -89,6 +89,7 @@
             <div class="input-group">
                 <span>監測累別</span>
                 <select id="loniccode" onchange="changeunit()">
+                    <option value=""></option>
                     <option value="8480-6">血壓(收縮壓) Blood Pressure</option>
                     <option value="8302-2">身高 Body height</option>
                     <option value="29463-7">體重 Body weight</option>
@@ -100,7 +101,7 @@
             <div class="input-group">
                 
                 <span>數值</span>
-                <input type="text" class="form-control" id="value" name="value" placeholder="請輸入數字" ><span id="unit"></span>
+                <input type="text" class="form-control" id="value" name="value" placeholder="請輸入數字" ><span id="unit">mmHg</span>
             </div>
             <div class="input-group">
                 <span>監測日期</span>
@@ -190,6 +191,7 @@
 
         const changeunit = () => {
             let type = document.getElementById('loniccode').value;
+            console.log('   1   '  +type);
             if (value==undefined){
                 document.getElementById('unit').innerText = '';
             }else if(value=='8480-6'){
@@ -203,7 +205,7 @@
             }else if(value=='8867-4'){
                 document.getElementById('unit').innerText = 'beats/min';
             }else{
-
+                document.getElementById('unit').innerText = '';
             }
             
         }
