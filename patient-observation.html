@@ -192,20 +192,22 @@
         const changeunit = () => {
             let type = document.getElementById('loniccode').value;
             console.log('   1   '  +type);
-            if (value==undefined){
+            if (type==undefined){
                 document.getElementById('unit').textContent  = '';
-            }else if(value=='8480-6'){
+            }else if(type=='8480-6'){
                 document.getElementById('unit').textContent  = 'mmHg';
-            }else if(value=='8302-2'){
+            }else if(type=='8302-2'){
                 document.getElementById('unit').textContent  = 'cm';
-            }else if(value=='29463-7'){
+            }else if(type=='29463-7'){
                 document.getElementById('unit').textContent  = 'kg';
-            }else if(value=='8310-5'){
+            }else if(type=='8310-5'){
                 document.getElementById('unit').textContent  = 'Cel';
-            }else if(value=='8867-4'){
+            }else if(type=='8867-4'){
                 console.log('   2   '  );
                 document.getElementById('unit').textContent  = 'beats/min';
             }else{
+                
+                console.log('   3   '  );
                 document.getElementById('unit').textContent  = '';
             }
             
