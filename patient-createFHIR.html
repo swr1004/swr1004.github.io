@@ -97,7 +97,7 @@
             console.log(jsondata);
 
            registerObj.Patient = jsondata;
-             
+           console.log('registerObj = ' +registerObj);
             let response = await createFHIRPatient(registerObj);
             if (!response.success) {
                 alert(response.msg ? response.msg : '註冊失敗');
