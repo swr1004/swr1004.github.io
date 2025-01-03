@@ -96,8 +96,8 @@
             let jsondata = localStorage.getItem('fhir-patient2');
             console.log(jsondata);
 
-           registerObj.Patient = jsondata;
-           console.log('registerObj = ' +JSON.stringify(registerObj));
+           registerObj.Patient = JSON.parse(jsondata);
+           console.log('registerObj = ' +JSON.parse(registerObj));
             let response = await createFHIRPatient(registerObj);
             if (!response.success) {
                 alert(response.msg ? response.msg : '註冊失敗');
