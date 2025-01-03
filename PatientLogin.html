@@ -101,7 +101,14 @@
             console.log(patient);
             localStorage.setItem('token',response.jwt);
 
-            
+            const response1 = await getRemoteFHIRResourceById('/Patient/'+resource.id);
+            if (!response.success || !response.data) {
+                localStorage.setItem('fhir-patient1', '0');
+                localStorage.setItem('fhir-patient2', JSON.stringify(patient));
+            }else{
+                localStorage.setItem('fhir-patient1', '1');
+                
+            }
             
             localStorage.setItem('patient', JSON.stringify(patient));
             localStorage.setItem('login-role', 'patient');

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建立FHIR Patient資料</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        @media screen and (max-width: 768px) {
+            .input-item {
+                margin-left: 0 !important;
+            }
+
+            .input-search {
+                width: 100% !important;
+                margin-left: 0 !important;
+                margin-top: -15px;
+            }
+
+            .input-search button {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/patient-login.html">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">Patient PHR-Reports</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <a href="/patient-checkin.html">報到</a>
+                </li>
+                <li>
+                    <a href="/patient-observation.html">上傳監測資料</a>
+
+                </li>
+                <li>
+                    <a href="/patient-booking.html">掛號</a>
+
+                </li>
+
+                <li>
+                    <span id="patient-name"></span>
+                </li>
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <div class="mt-20 flex">
+               
+                <div class="input-search" style="margin-left: auto; width: 100px;">
+                    <div class="fs-14">&nbsp;</div>
+                    <button id="create" class="btn-main ml-10" onclick="create();">建立</button>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        const patientMaster = getPatient();
+        document.addEventListener('DOMContentLoaded', () => {
+            const fhirrole = localStorage.getItem('fhir-patient1');
+            if (fhirrole=='1'){
+                let btn = document.getElementById('create');
+                btn.remove();
+                window.location.href = '/patient-reports.html';
+            }
+            const login = checkLogin();
+            if (login && patientMaster) {
+                setPatient();
+            }
+        });
+
+        const setPatient = () => {
+            document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+            document.getElementById('input-patient-identifier').value = patientMaster.identifier;
+        }
+
+        const create = async () => {
+            let jsondata = localStorage.getItem('fhir-patient2');
+            console.log(jsondata);
+
+           registerObj.Patient = jsondata;
+             
+            let response = await createFHIRPatient(registerObj);
+            if (!response.success) {
+                alert(response.msg ? response.msg : '註冊失敗');
+                return;
+            }else{
+                console.log(response);
+                alert('成功建立FHIR 資料');
+            }
+            localStorage.setItem('fhir-patient1', '1');
+            
+            localStorage.removeItem('fhir-patient2');
+            window.location.href = '/patient-reports.html';
+        }
+
+        
+    </script>
+</body>
+
+</html>

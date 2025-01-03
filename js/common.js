@@ -1,6 +1,10 @@
 const checkLogin = () => {
     const id = localStorage.getItem('login-id');
     const role = localStorage.getItem('login-role');
+    const fhirrole = localStorage.getItem('fhir-patient1');
+    if (fhirrole=='0'){
+        window.location.href = '/patient-createFHIR.html';
+    }
     let needLogin = false;
     try {
         if (role === "patient") {

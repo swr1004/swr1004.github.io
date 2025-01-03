@@ -1,5 +1,7 @@
 const FHIR_BASE = 'https://fhir.tcumi.com:51443/hapi66/fhir';
 const API_HOST = 'https://fhir.tcumi.com:51443/hapi66';
+const FHIR_BASE2 = 'https://fhir.tcumi.com:51443/hapi66/fhir';
+const API_HOST2 = 'https://fhir.tcumi.com:51443/hapi66';
 //const FHIR_BASE = 'http://localhost:8080/r5/fhir';
 //const API_HOST = 'http://localhost:8080/r5';
 const API_HEADERS = {
@@ -567,7 +569,7 @@ const Patientlogin = async (id, identifier) => {
     const response = await usePost(url, API_HEADERS);
     console.log(response);
     //console.log(response.total);
-    if (response.total == null){
+    if (null== response || response.total == null){
         return {
             success : false,
             data : null,
@@ -619,6 +621,29 @@ const createPatient = async (data) => {
     
 
     const url = `${API_HOST}/api/registerPatient`;
+    const response = await usePost(url, API_HEADERS, JSON.stringify(data));
+    console.log(response);
+    if (response.data !=undefined){
+        return {
+            success: false,
+            msg: "註冊失敗" + response.msg,
+            data: response
+        };
+    }else{
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
+        return {
+            success: success,
+            msg: success ? "註冊成功" : "註策失敗",
+            data: response
+        };
+    }
+    
+}
+
+const createFHIRPatient = async (data) => {
+    
+
+    const url = `${API_HOST2}/api/registerPatient`;
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
     console.log(response);
     if (response.data !=undefined){
@@ -835,6 +860,17 @@ const getOrganizationByName = async (name) => {
     return {
         success: response ? response.total > 0 : false,
         data: response ? response.total > 0 ? response.entry[0].resource : null : null
+    };
+}
+
+const getRemoteFHIRResourceById = async (resource) => {
+    const url = `${FHIR_BASE2}/`+resource;
+    API_HEADERS.Authorization = localStorage.getItem('token');
+    const response = await useGet(url, API_HEADERS);
+    const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
+    return {
+        success: success,
+        data: success ? response : null
     };
 }
 
