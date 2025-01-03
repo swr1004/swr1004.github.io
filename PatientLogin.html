@@ -103,7 +103,7 @@
 
             const response1 = await getRemoteFHIRResourceById('Patient/'+resource.id);
             console.log(response1);
-            console.log(' 22 = ' +response.data);
+            console.log(' 22 = ' +JSON.stringify(response.data));
             if (!response1.success || !response1.data) {
                 localStorage.setItem('fhir-patient1', '0');
                 localStorage.setItem('fhir-patient2', JSON.stringify(response.data));
