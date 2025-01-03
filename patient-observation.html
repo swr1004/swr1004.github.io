@@ -180,6 +180,8 @@
                 document.getElementById('patient-name').innerText = '您好，';
                 getData();
             }else{
+                
+            checkcreate();
                 const login = checkLogin();
                 if (login && patientMaster) {
                    setPatient();

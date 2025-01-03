@@ -1,11 +1,7 @@
 const checkLogin = () => {
     const id = localStorage.getItem('login-id');
     const role = localStorage.getItem('login-role');
-    const fhirrole = localStorage.getItem('fhir-patient1');
-    console.log('fhirrole '+fhirrole);
-    if (fhirrole=='0'){
-        window.location.href = '/patient-createFHIR.html';
-    }
+ 
     let needLogin = false;
     try {
         if (role === "patient") {
@@ -52,6 +48,16 @@ const logout = () => {
     localStorage.removeItem('person');
     localStorage.removeItem('patient');
     window.location.href = loginUrl;
+}
+
+const checkcreate = () => {
+    const fhirrole = localStorage.getItem('fhir-patient1');
+    console.log('fhirrole '+fhirrole);
+    if (fhirrole=='0'){
+        window.location.href = '/patient-createFHIR.html';
+    }
+    
+    return true;
 }
 
 const getPractioner = () => {

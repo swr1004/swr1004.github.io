@@ -105,6 +105,8 @@
        
         document.addEventListener('DOMContentLoaded', () => {
             const login = checkLogin();
+            
+            checkcreate();
             if (login && patientMaster) {
                 setPatient();
             }
