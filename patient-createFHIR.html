@@ -83,13 +83,13 @@
             }
             const login = checkLogin();
             if (login && patientMaster) {
-                setPatient();
+              //  setPatient();
             }
         });
 
         const setPatient = () => {
-            document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
-            document.getElementById('input-patient-identifier').value = patientMaster.identifier;
+            //document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+            //document.getElementById('input-patient-identifier').value = patientMaster.identifier;
         }
 
         const create = async () => {
