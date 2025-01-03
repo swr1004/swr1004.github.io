@@ -98,10 +98,11 @@
                 identifier: resource.identifier[0].value,
                 birthDate : resource.birthDate
             };
-            console.log(patient);
+            //console.log(patient);
             localStorage.setItem('token',response.jwt);
 
             const response1 = await getRemoteFHIRResourceById('Patient/'+resource.id);
+            console.log(response1);
             if (!response1.success || !response1.data) {
                 localStorage.setItem('fhir-patient1', '0');
                 localStorage.setItem('fhir-patient2', JSON.stringify(patient));
