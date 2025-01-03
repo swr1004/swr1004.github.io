@@ -4,7 +4,7 @@ const checkLogin = () => {
     const fhirrole = localStorage.getItem('fhir-patient1');
     console.log('fhirrole '+fhirrole);
     if (fhirrole=='0'){
-        window.location.href = '/patient-createFHIR.html';
+      //  window.location.href = '/patient-createFHIR.html';
     }
     let needLogin = false;
     try {
