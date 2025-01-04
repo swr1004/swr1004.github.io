@@ -173,20 +173,16 @@
             document.getElementById("entrydate").value = toLocalDateString(new Date());
             document.getElementById('unit').textContent  = '';
             let mytoekn =   getQueryString()["token"];
+            let id =   getQueryString()["id"];
             if (mytoekn !=null){
-                localStorage.setItem('token',mytoekn);
+                localStorage.setItem('persontoken',mytoekn);
+                localStorage.setItem('personid',id);
                // alert(mytoekn);
  
                 document.getElementById('patient-name').innerText = '您好，';
                 getData();
             }else{
-                
-            checkcreate();
-                const login = checkLogin();
-                if (login && patientMaster) {
-                   setPatient();
-                   getData();
-                }
+                window.location.href = 'Person-deny.html';
             }
             
         });

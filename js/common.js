@@ -40,6 +40,9 @@ const logout = () => {
     if (localStorage.getItem('login-role') === "practitioner") {
         loginUrl = "/PractitionerLogin.html";
     }
+    if (localStorage.getItem('login-role') === "person") {
+        loginUrl = "/Person-deny.html";
+    }
     localStorage.removeItem('login-id');
     localStorage.removeItem('login-role');
     localStorage.removeItem('patient');

@@ -2,6 +2,7 @@ const FHIR_BASE = 'https://fhir.tcumi.com:51443/hapi66/fhir';
 const API_HOST = 'https://fhir.tcumi.com:51443/hapi66';
 const FHIR_BASE2 = 'https://fhir.tcumi.com:52443/hapi66/fhir';
 const API_HOST2 = 'https://fhir.tcumi.com:52443/hapi66';
+const FHIR_APP = 'https://dd1004.github.io/personentry.html'
 //const FHIR_BASE = 'http://localhost:8080/r5/fhir';
 //const API_HOST = 'http://localhost:8080/r5';
 const API_HEADERS = {
@@ -26,11 +27,11 @@ let personJSONobj = {
 				"value": ""
 			},
 			{
-				"system": "jobPosition",
+				"system": "entrypersonid",
 				"value": ""
 			},
 			{
-				"system": "institution",
+				"system": "entrypersonname",
 				"value": ""
 			},
 			{
@@ -585,6 +586,27 @@ const Patientlogin = async (id, identifier) => {
     
 }
 
+const Personlogin = async (id, identifier) => {
+    const url = `${API_HOST}/api/Personlogin?username=${id}&password=${identifier}`;
+    const response = await usePost(url, API_HEADERS);
+    console.log(response);
+    //console.log(response.total);
+    if (null== response || response.total == null){
+        return {
+            success : false,
+            data : null,
+            jwt : null
+        };
+    }else{
+        return {
+            success: response ? response.total > 0 : false,
+            data: response ? response.entry.length > 0 ? response.entry[0] : null : null,
+            jwt: response.jwt
+        };
+    }
+    
+}
+
 const Practitionerlogin = async (id, identifier) => {
     const url = `${API_HOST}/api/Practitionerlogin?username=${id}&password=${identifier}`;
     const response = await usePost(url, API_HEADERS);
@@ -615,6 +637,29 @@ const getPersonById = async (id) => {
         success: success,
         data: success ? response : null
     };
+}
+
+const createPerson = async (data) => {
+    
+
+    const url = `${API_HOST}/api/registerPerson`;
+    const response = await usePost(url, API_HEADERS, JSON.stringify(data));
+    console.log(response);
+    if (response.data !=undefined){
+        return {
+            success: false,
+            msg: "註冊失敗" + response.msg,
+            data: response
+        };
+    }else{
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
+        return {
+            success: success,
+            msg: success ? "註冊成功" : "註策失敗",
+            data: response
+        };
+    }
+    
 }
 
 const createPatient = async (data) => {

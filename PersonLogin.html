@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient PHR APP</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 30%;
+            max-width: 120px;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1 class="mt-20 text-center">登入</h1>
+        <div class="card">
+            <div class="input-group">
+                <span>email</span>
+                <input type="text" class="form-control" id="id" name="id" placeholder="請輸入email" value="wenrong.hsiao@gmail.com">
+            </div>
+            <div class="input-group">
+                <span>密碼</span>
+                
+                <input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" >
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn-main" onclick="login();">登入</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/sha256.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                //const id = localStorage.getItem('login-id');
+                //const practitioner = JSON.parse(localStorage.getItem('person'));
+               // const role = localStorage.getItem('login-role');
+               // if (id && practitioner && role == 'patient') {
+                    window.location.href = '/patient-reports.html';
+               // }
+            } catch (e) { }
+        });
+
+        const login = async () => {
+            const id = document.getElementById('id').value;
+            const identifier = document.getElementById('password').value;
+
+            if (id == '' || identifier == '') {
+                alert('請輸入帳號及密碼');
+                return;
+            }
+
+            const response = await Personlogin(id, sha256(identifier));
+
+            if (!response.success || !response.data) {
+                alert("登入失敗");
+                return;
+            }
+
+            let resource = response.data;
+            
+            let name = resource.name.length > 0 ? resource.name[0].text : null;
+
+            if (!name) {
+                alert("取得資料時發生錯誤");
+                return;
+            }
+            const person = {
+                id: resource.id,
+                name: name,
+                identifier: resource.identifier[0].value,
+                birthDate : resource.birthDate
+            };
+            //console.log(patient);
+            localStorage.setItem('token',response.jwt);
+
+            
+            
+            //localStorage.setItem('person', JSON.stringify(person));
+           // localStorage.setItem('login-role', 'person');
+           // localStorage.setItem('login-id', person.id);
+
+            alert('登入成功！');
+            window.location.href = '${FHIR_APP}/Person-patient.html?token='+response.jwt+'&id='+person.id+'&name='+person.name;
+        }
+    </script>
+</body>
+
+</html>
