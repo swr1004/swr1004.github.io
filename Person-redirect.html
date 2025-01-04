@@ -77,13 +77,13 @@
             let mytoekn =   getQueryString()["token"];
             let myid =   getQueryString()["id"];
             let myname =   getQueryString()["name"];
-            if (mytoekn !=null && id != null){
+            if (mytoekn !=null && myid != null){
                 const person = {
                    id: myid,
                    name: myname
                 };
                 localStorage.setItem('token',mytoekn);
-                localStorage.setItem('login-id',id);
+                localStorage.setItem('login-id',myid);
                 localStorage.setItem('login-role','person');
                 localStorage.setItem('person',JSON.stringify(person));
                 window.location.href = 'Person-patient.html';

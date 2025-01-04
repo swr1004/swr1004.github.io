@@ -200,7 +200,7 @@
             registerObj.Person = personJSONobj;
             //registerObj.Patient = patientJSONobj;
              
-            let response = await createPatient(registerObj);
+            let response = await createPerson(registerObj);
             if (!response.success) {
                 alert(response.msg ? response.msg : '註冊失敗');
                 return;
