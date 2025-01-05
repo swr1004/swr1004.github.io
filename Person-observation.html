@@ -282,11 +282,8 @@
             
         }
         const query= async () => {
-            let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
             console.log('query'+patientid);
-            if (patientid==undefined){
-             alert('沒有病患ID');
-        }
+            
                 let response = await getFHIRResource("Observation?subject="+patientid);
                 if (response.data!=null){
                     let datas =response.data ;
