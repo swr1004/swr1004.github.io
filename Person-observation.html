@@ -144,7 +144,7 @@
             document.getElementById("entrydate").value = toLocalISOString(new Date());
             patientid =   getQueryString()["patient"];
             patientname =   getQueryString()["name"];
-            console.log(patientid);
+            console.log('1'+patientid);
             const login = checkLogin();
             if (login ){
                 if (patientid=undefined){
