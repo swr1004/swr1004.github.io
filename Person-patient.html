@@ -302,16 +302,19 @@
            const person = getPerson();
            let response = await getPatientByLink('Patient/'+id);
            if (response.success){
-            let response = await createFHIR2PatientAndID(response.data,id );
-            console.log(response)
-            if (!response.success) {
-                alert(response.msg ? response.msg : '資料上傳失敗');
+           
+            let response2 = await createFHIR2PatientAndID(response.data,id );
+            console.log(response2)
+            if (!response2.success) {
+                alert(response2.msg ? response2.msg : '資料上傳失敗');
                 return;
             }else{
-                console.log(response);
+                console.log(response2);
                 alert('資料上傳成功');
-                requery();
+                
             }
+           }else{
+            alert('操作失敗, 找不到Patient資料');
            }
       
   
