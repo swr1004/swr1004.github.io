@@ -117,8 +117,7 @@
             <hr/>
             <div class="mt-15">
                 <div style="overflow-x: auto;">
-                    <form method="GET" name = "myform" action="https://dd1004.github.io/observation.html" target="_blank">
-                        <input type="hidden" name="token" id="mytoken">
+                    
                     <table class="table table-bordered" style="min-width: 700px;">
                         <thead>
                             <tr>
@@ -130,7 +129,7 @@
                         </thead>
                         <tbody id="tbody"></tbody>
                     </table>
-                </form>
+                
                 </div>
             </div>
         </div>
@@ -296,7 +295,7 @@
             
         }
         const query= async () => {
-            console.log('query'+patientid);
+          //  console.log('query'+patientid);
             
                 let response = await getFHIRResource("Observation?subject="+patientid);
                 if (response.data!=null){
