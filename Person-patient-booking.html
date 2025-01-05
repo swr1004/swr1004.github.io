@@ -48,11 +48,7 @@
         </div>
         
         <div class="card">
-            <div class="input-group">
-                
-                    <span>email</span>
-                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入email" value="wenrong.hsiao@gmail.com">
-            </div>
+
             <div class="input-group">
                 <span>授權日期</span>
                 <input type="datetime-local" class="form-control" id="bookdate" name="bookdate" placeholder="請輸入出生年月日"
@@ -129,8 +125,8 @@
             const period = document.getElementById('bookdate').value;
             const practitioner = document.getElementById('practitioner').value;
             const subject = "Patient/" +patientid;
-            if (identifier == '' || period == '') {
-                alert('請先登入及選擇看診日期');
+            if (patientid == undefined || patientid == '') {
+                alert('請先登入');
                 return;
             }
             encounterJSONobj.subject.reference= subject;
