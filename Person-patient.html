@@ -278,7 +278,7 @@
                         <td><a href=Person-observation.html?patient=${data.resource.id}&name=${data.resource.name[0].text}>${data.resource.id}</a></td>
                         <td>${data.resource.name[0].text}</td>
                         <td>${data.resource.gender}</td>
-                        <td><button class="btn-main" onclick="uploadPatient(${data.resource.id});">上傳</button></td>
+                        <td><button class="btn-main" onclick="uploadPatient('${data.resource.id}');">上傳</button></td>
                     </tr>
                 `;
             });
@@ -288,7 +288,7 @@
                          <td><a href=Person-observation.html?patient=${datas.entry[0].resource.id}&name=${datas.entry[0].resource.name[0].text}>${datas.entry[0].resource.id}</a></td>
                         <td>${datas.entry[0].resource.name[0].text}</td>
                         <td>${datas.entry[0].resource.gender}</td>
-                        <td><button class="btn-main" onclick="uploadPatient(${data.entry[0].resource.id});">上傳</button></td>
+                        <td><button class="btn-main" onclick="uploadPatient('${data.entry[0].resource.id}');">上傳</button></td>
                     </tr>
                 `;
            }
