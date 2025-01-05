@@ -27,11 +27,11 @@ let personJSONobj = {
 				"value": ""
 			},
 			{
-				"system": "entrypersonid",
+				"system": "jobPosition",
 				"value": ""
 			},
 			{
-				"system": "entrypersonname",
+				"system": "institution",
 				"value": ""
 			},
 			{
@@ -96,6 +96,7 @@ let personJSONobj = {
     let  patientJSONobj = {
         
 		"resourceType": "Patient",
+        "id":"",
 		"active": "true",
         "identifier": [ 
 			{
@@ -107,11 +108,11 @@ let personJSONobj = {
 				"value": ""
 			},
 			{
-				"system": "jobPosition",
+				"system": "man",
 				"value": ""
 			},
 			{
-				"system": "institution",
+				"system": "name",
 				"value": ""
 			},
 			{
@@ -207,6 +208,9 @@ let personJSONobj = {
         "subject": {
           "reference": "Patient/xxxx"
         },
+        "performer":[{
+            "reference": "Patient/xxxx"
+          }],
         "effectiveDateTime": "2025-01-01",
         "valueQuantity": {
           "value": 120,
@@ -685,6 +689,30 @@ const createPatient = async (data) => {
     
 }
 
+const createPatientAndID = async (data,id) => {
+    
+
+    const url = `${FHIR_BASE}/Patient/${id}`;
+API_HEADERS.Authorization = localStorage.getItem('token');
+const response = await usePut(url, API_HEADERS, JSON.stringify(data));
+    if (response.data !=undefined){
+        return {
+            success: false,
+            msg: "新增失敗" + response.msg,
+            data: response
+        };
+    }else{
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
+        return {
+            success: success,
+            msg: success ? "新增成功" : "新增失敗",
+            data: response
+        };
+    }
+    
+}
+
+
 const createFHIRPatient = async (data) => {
     
 
@@ -752,15 +780,17 @@ const createPersonAndPractitioner = async (data) => {
     }
     
 }
-
+//https://fhir.tcumi.com:52443/hapi66/fhir/Observation 回傳Observation 的json, 根本沒有issue, 所以一定會成立issue==undefined, 之前不知道執行哪一段讓我寫加入這段code的判斷
 const createFHIRResource = async (myresource, data) => {
     
 
     const url = `${FHIR_BASE}/${myresource}`;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
-
-    const success = response ? response.issue==undefined?false: response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
+    //console.log('createFHIRResource1  == '+JSON.stringify(response));
+    //console.log('createFHIRResource2  == '+response.issue);
+    //console.log('createFHIRResource3  == '+response.issue.length);
+    const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
     return {
         success: success,
         msg: success ? "資料新增成功" : "資料新增失敗",
@@ -1014,3 +1044,16 @@ const uploadFileToStorage = async (file) => {
         data: attachment
     };
 }
+
+const myuuid = async () => {
+    var d = Date.now();
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+      d += performance.now(); //use high-precision timer if available
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+  
