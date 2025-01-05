@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病患授權</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 30%;
+            max-width: 120px;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/patient-login.html">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">Patient System-Reports</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <a href="/patient-reports.html">檢查文件</a>
+                </li>
+                <li>
+                    <a href="/patient-observation.html">上傳監測資料</a>
+
+                </li>
+                <li>
+                    <a href="/patient-checkin.html">報到</a>
+
+                </li>
+
+                <li>
+                    <span id="patient-name"></span>
+                </li>
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+        <div class="text-center">
+            <img src="/img/logo.png" alt="logo" class="logo">
+        </div>
+        <h1 class="mt-20 text-center">病患掛號</h1>
+        <div class="card">
+            <div class="input-group">
+                
+                    <span>email</span>
+                <input type="text" class="form-control" id="identifier" name="identifier" placeholder="請輸入email" value="wenrong.hsiao@gmail.com">
+            </div>
+            <div class="input-group">
+                <span>掛號日期</span>
+                <input type="datetime-local" class="form-control" id="bookdate" name="bookdate" placeholder="請輸入出生年月日"
+                    value="1990-01-01">
+            </div>
+            <div class="input-group">
+                <span>掛號醫師</span>
+                <input id="practitioner"  list="practitionerlst" />
+               
+            </div>
+            
+            <div class="text-center">
+                <button type="button" class="btn-main" onclick="booking();">掛號</button>
+            </div>
+
+            <hr/>
+            <div class="mt-15">
+                <div style="overflow-x: auto;">
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>掛號日期</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+
+        
+       const patientMaster = getPatient();
+       
+        document.addEventListener('DOMContentLoaded', () => {
+            const login = checkLogin();
+            
+            checkcreate();
+            if (login && patientMaster) {
+                setPatient();
+            }
+            document.getElementById("bookdate").value = toLocalISOString(new Date());
+            query();
+            fillDataList();
+        });
+
+
+
+        const setPatient = () => {
+            document.getElementById('patient-name').innerText = '您好，' + patientMaster.name;
+        }
+        const booking = async () => {
+            const identifier = document.getElementById('identifier').value;
+            const period = document.getElementById('bookdate').value;
+            const practitioner = document.getElementById('practitioner').value;
+            const subject = "Patient/" +patientMaster.id;
+            if (identifier == '' || period == '') {
+                alert('請先登入及選擇看診日期');
+                return;
+            }
+            encounterJSONobj.subject.reference= subject;
+            encounterJSONobj.actualPeriod.start= period;
+            encounterJSONobj.identifier[0].value="Patient";
+            encounterJSONobj.participant[0].actor.reference = "Practitioner/"+practitioner;
+          
+             
+            let response = await createFHIRResource("Encounter", encounterJSONobj);
+            if (!response.success) {
+                alert(response.msg ? response.msg : '掛號失敗');
+                return;
+            }else{
+                console.log(response);
+                alert('掛號成功');
+            }
+            
+
+          
+        }
+
+        const query= async () => {
+            let response = await getFHIRResource("Encounter?subject="+patientMaster.id);
+                console.log(response);
+                let datas =response.data ;
+                if (Array.isArray(response.data)){
+                   datas.sort((a, b) => {
+                        return a.id - b.id;
+                   });
+                }
+                setData(datas);
+           
+        }
+
+      
+
+        const setData = (datas) => {
+            const tbody = document.getElementById('tbody');
+            let html = '';
+            // 未報到(unknown)、已報到(planned)、看診中(in-progress)、已完成(completed)
+           /*
+            Array.prototype.forEach.call(datas, data => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.id}</td>
+                        <td>${data.name}</td>
+                        
+                    </tr>
+                `;
+            });
+            */
+           
+           if (Array.isArray(datas)){
+            datas.forEach((data) => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.resource.actualPeriod.start}</td>
+                        <td>${data.resource.status}</td>
+                        
+                    </tr>
+                `;
+            });
+           }else{
+            html += `
+                    <tr>
+                        <td>${datas.resource.actualPeriod.start}</td>
+                        <td>${datas.resource.status}</td>
+                    </tr>
+                `;
+           }
+            //alert(html);
+            tbody.innerHTML = html;
+        }
+
+        const fillDataList= async () => {
+            let response = await getFHIRResource("Practitioner?identifier=doctor");
+            var container = document.getElementById('practitioner'),
+            i = 0,
+            //len = optionList.length,
+            dl = document.createElement('datalist');
+            let datas =response.data ;
+                if (Array.isArray(response.data)){
+                   datas.sort((a, b) => {
+                        return a.id - b.id;
+                   });
+                }
+            dl.id = 'practitionerlst';
+            console.log(response);
+            if (Array.isArray(datas)){
+            datas.forEach((data) => {
+                var option = document.createElement('option');
+               option.value = data.resource.id;
+               option.text = data.resource.name[0].text;
+               dl.appendChild(option);
+                
+            });
+           }else{
+            var option = document.createElement('option');
+               option.value = datas.resource.id;
+               option.text = datas.resource.name[0].text;
+               dl.appendChild(option);
+
+           }
+            container.appendChild(dl);
+        }
+    </script>
+</body>
+
+</html>

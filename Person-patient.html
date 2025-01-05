@@ -279,6 +279,7 @@
                         <td>${data.resource.name[0].text}</td>
                         <td>${data.resource.gender}</td>
                         <td><button class="btn-main" onclick="uploadPatient('${data.resource.id}');">上傳</button></td>
+                        <td><a href=Person-patient-booking.html?patient=${data.resource.id}&name=${data.resource.name[0].text}>授權</a></td>
                     </tr>
                 `;
             });
@@ -289,6 +290,7 @@
                         <td>${datas.entry[0].resource.name[0].text}</td>
                         <td>${datas.entry[0].resource.gender}</td>
                         <td><button class="btn-main" onclick="uploadPatient('${data.entry[0].resource.id}');">上傳</button></td>
+                        <td><a href=Person-patient-booking.html?patient=${datas.entry[0].resource.id}&name=${datas.entry[0].resource.name[0].text}>授權</a></td>
                     </tr>
                 `;
            }
@@ -304,12 +306,12 @@
            if (response.success){
            
             let response2 = await createFHIR2PatientAndID(response.data,id );
-            console.log(response2)
+            //console.log(response2)
             if (!response2.success) {
                 alert(response2.msg ? response2.msg : '資料上傳失敗');
                 return;
             }else{
-                console.log(response2);
+                //console.log(response2);
                 alert('資料上傳成功');
                 
             }
