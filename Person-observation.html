@@ -107,7 +107,7 @@
 
             
             <div class="text-center">
-                <button type="button" class="btn-main" onclick="upload();">上傳監測資料</button>
+                <button type="button" class="btn-main" onclick="adddata();">新增監測資料</button>
             </div>
 
             <hr/>
@@ -125,6 +125,7 @@
                                 <th>時間</th>
                                 <th>監測項目</th>
                                 <th>結果</th>
+                                <th>上傳</th>
                             </tr>
                         </thead>
                         <tbody id="tbody"></tbody>
@@ -197,7 +198,7 @@
         }
 
 
-       const upload = async () => {
+       const adddata = async () => {
        
         let loniccode = document.getElementById('loniccode').value;
             if (!loniccode) {
@@ -251,14 +252,34 @@
             let response = await createFHIRResource("Observation", observationobj);
             console.log(response)
             if (!response.success) {
-                alert(response.msg ? response.msg : '資料上傳失敗');
+                alert(response.msg ? response.msg : '資料新增失敗');
                 return;
             }else{
                 console.log(response);
-                alert('資料上傳成功');
+                alert('資料新增成功');
                 requery();
             }
 
+       }
+
+       const upload = async(id) =>{
+        let response = await getPatientByLink('Observation/'+id);
+           if (response.success){
+           
+            let response2 = await createFHIR2Resource('Observation',response.data);
+            //console.log(response2)
+            if (!response2.success) {
+                alert(response2.msg ? response2.msg : '資料上傳失敗');
+                return;
+            }else{
+                //console.log(response2);
+                alert('資料上傳成功');
+                
+            }
+           }else{
+            alert('操作失敗, 找不到Patient資料');
+           }
+      
        }
        const requery= async () => {
         
@@ -319,6 +340,7 @@
                         <td>${data.resource.effectiveDateTime}</td>
                         <td>${data.resource.code.text}</td>
                         <td>${data.resource.valueQuantity.value}</td>
+                        <td><button class="btn-main" onclick="upload('${data.resource.id}');">上傳</button></td>
                         
                     </tr>
                 `;
@@ -329,6 +351,8 @@
                         <td>${datas.resource.effectiveDateTime}</td>
                         <td>${datas.resource.code.text}</td>
                         <td>${datas.resource.valueQuantity.valuey}</td>
+                        <td>${data.resource.valueQuantity.value}</td>
+                        <td><button class="btn-main" onclick="upload('${datas.resource.id}');">上傳</button></td>
                     </tr>
                 `;
            }
