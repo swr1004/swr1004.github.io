@@ -138,8 +138,8 @@
     <script src="/js/api.js"></script>
     <script src="/js/common.js"></script>
     <script>
-        let patientid = '';
-        let patientname = '';
+        const patientid = '';
+        const patientname = '';
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("entrydate").value = toLocalISOString(new Date());
             patientid =   getQueryString()["patient"];
