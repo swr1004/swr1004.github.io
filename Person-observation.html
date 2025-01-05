@@ -147,7 +147,7 @@
             
             const login = checkLogin();
             if (login ){
-                if (patientid=undefined){
+                if (patientid==undefined){
                     window.location.href = 'Person-patient.html';
                 }
                 document.getElementById('patient-name').innerText = patientname;
@@ -199,7 +199,7 @@
 
        const upload = async () => {
         let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
-        if (patientid=undefined){
+        if (patientid==undefined){
              alert('沒有病患ID');
         }
         let loniccode = document.getElementById('loniccode').value;
@@ -265,7 +265,8 @@
        }
        const requery= async () => {
         let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
-        if (patientid=undefined){
+        console.log('requery'+patientid);
+        if (patientid==undefined){
              alert('沒有病患ID');
         }
             let response = await getFHIRResource("Observation?subject="+patientid);
@@ -282,7 +283,8 @@
         }
         const query= async () => {
             let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
-        if (patientid=undefined){
+            console.log('query'+patientid);
+            if (patientid==undefined){
              alert('沒有病患ID');
         }
                 let response = await getFHIRResource("Observation?subject="+patientid);
