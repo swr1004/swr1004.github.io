@@ -35,15 +35,7 @@
             </div>
             <div class="header-right">
                 <li>
-                    <a href="/patient-reports.html">檢查文件</a>
-                </li>
-                <li>
-                    <a href="/patient-observation.html">上傳監測資料</a>
-
-                </li>
-                <li>
-                    <a href="/patient-checkin.html">報到</a>
-
+                    <a href="/Person-patient.html">上傳Patient資料</a>
                 </li>
 
                 <li>
@@ -104,11 +96,17 @@
        const patientMaster = getPatient();
        
         document.addEventListener('DOMContentLoaded', () => {
-            const login = checkLogin();
+            patientid =   getQueryString()["patient"];
+            patientname =   getQueryString()["name"];
             
-            checkcreate();
-            if (login && patientMaster) {
-                setPatient();
+            const login = checkLogin();
+            if (login ){
+                if (patientid==undefined){
+                    window.location.href = 'Person-patient.html';
+                }
+              
+            }else{
+                window.location.href = 'Person-deny.html';
             }
             document.getElementById("bookdate").value = toLocalISOString(new Date());
             query();
