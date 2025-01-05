@@ -141,6 +141,7 @@
                                 <th>ID</th>
                                 <th>姓名</th>
                                 <th>性別</th>
+                                <th>上傳資料到FHIR Server</th>
                             </tr>
                         </thead>
                         <tbody id="tbody"></tbody>
@@ -277,7 +278,7 @@
                         <td><a href=Person-observation.html?patient=${data.resource.id}&name=${data.resource.name[0].text}>${data.resource.id}</a></td>
                         <td>${data.resource.name[0].text}</td>
                         <td>${data.resource.gender}</td>
-                        
+                        <td><button class="btn-main" onclick="uploadPatient();">上傳</button></td>
                     </tr>
                 `;
             });
@@ -287,6 +288,7 @@
                          <td><a href=Person-observation.html?patient=${datas.entry[0].resource.id}&name=${datas.entry[0].resource.name[0].text}>${datas.entry[0].resource.id}</a></td>
                         <td>${datas.entry[0].resource.name[0].text}</td>
                         <td>${datas.entry[0].resource.gender}</td>
+                        <td><button class="btn-main" onclick="uploadPatient();">上傳</button></td>
                     </tr>
                 `;
            }
