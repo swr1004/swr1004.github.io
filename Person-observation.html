@@ -211,7 +211,7 @@
                 alert('請輸入數值');
                 return;
             }
-
+            console.log('patientid'+patientid);
             observationobj.subject.reference="Patient/"+patientid;
             observationobj.performer[0].reference="Patient/"+patientid;
             observationobj.effectiveDateTime = entrydate;
