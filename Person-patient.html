@@ -297,6 +297,27 @@
         }
            }
            
+           const uploadPatient = async (id) => {
+           
+           const person = getPerson();
+           let response = await getPatientByLink('Patient/'+id);
+           if (response.success){
+            let response = await createFHIR2PatientAndID(response.data,id );
+            console.log(response)
+            if (!response.success) {
+                alert(response.msg ? response.msg : '資料上傳失敗');
+                return;
+            }else{
+                console.log(response);
+                alert('資料上傳成功');
+                requery();
+            }
+           }
+      
+  
+
+       }
+
 
         const getQueryString= () => {
             var result = {}, queryString = location.search.slice(1),

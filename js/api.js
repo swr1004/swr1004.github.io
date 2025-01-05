@@ -712,6 +712,29 @@ const response = await usePut(url, API_HEADERS, JSON.stringify(data));
     
 }
 
+const createFHIR2PatientAndID = async (data,id) => {
+    
+
+    const url = `${FHIR_BASE2}/Patient/${id}`;
+API_HEADERS.Authorization = localStorage.getItem('token');
+const response = await usePut(url, API_HEADERS, JSON.stringify(data));
+    if (response.data !=undefined){
+        return {
+            success: false,
+            msg: "新增失敗" + response.msg,
+            data: response
+        };
+    }else{
+        const success = response ? response.data && response.data.length > 0 && response.data.code === "200" ? false : true : false;
+        return {
+            success: success,
+            msg: success ? "新增成功" : "新增失敗",
+            data: response
+        };
+    }
+    
+}
+
 
 const createFHIRPatient = async (data) => {
     
@@ -787,9 +810,6 @@ const createFHIRResource = async (myresource, data) => {
     const url = `${FHIR_BASE}/${myresource}`;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await usePost(url, API_HEADERS, JSON.stringify(data));
-    //console.log('createFHIRResource1  == '+JSON.stringify(response));
-    //console.log('createFHIRResource2  == '+response.issue);
-    //console.log('createFHIRResource3  == '+response.issue.length);
     const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
     return {
         success: success,
@@ -797,6 +817,20 @@ const createFHIRResource = async (myresource, data) => {
         data: response
     };
 }
+const createFHIR2Resource = async (myresource, data) => {
+    
+
+    const url = `${FHIR_BASE2}/${myresource}`;
+    API_HEADERS.Authorization = localStorage.getItem('token');
+    const response = await usePost(url, API_HEADERS, JSON.stringify(data));
+    const success = response ? response.issue && response.issue.length > 0 && response.issue[0].severity === "error" ? false : true : false;
+    return {
+        success: success,
+        msg: success ? "資料新增成功" : "資料新增失敗",
+        data: response
+    };
+}
+
 
 const createDocumentReference = async (myform) => {
     
