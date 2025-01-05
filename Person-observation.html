@@ -190,7 +190,7 @@
             var result = {}, queryString = location.search.slice(1),
             re = /([^&=]+)=([^&]*)/g, m;
             while (m = re.exec(queryString)) {
-                console.log(decodeURIComponent(m[1])+'-'+decodeURIComponent(m[2]));
+                ///console.log(decodeURIComponent(m[1])+'-'+decodeURIComponent(m[2]));
                 result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
             }
             return result;
@@ -261,7 +261,7 @@
 
        }
        const requery= async () => {
-        l
+        
             let response = await getFHIRResource("Observation?subject="+patientid);
             if (response.data!=null){
                 let datas =response.data ;
