@@ -138,13 +138,13 @@
     <script src="/js/api.js"></script>
     <script src="/js/common.js"></script>
     <script>
-        var patientid = '';
-        var patientname = '';
+        let patientid = '';
+        let patientname = '';
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("entrydate").value = toLocalISOString(new Date());
             patientid =   getQueryString()["patient"];
             patientname =   getQueryString()["name"];
-            console.log('1'+patientid);
+            
             const login = checkLogin();
             if (login ){
                 if (patientid=undefined){
@@ -197,6 +197,10 @@
 
 
        const upload = async () => {
+        let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
+        if (patientid=undefined){
+             alert('沒有病患ID');
+        }
         let loniccode = document.getElementById('loniccode').value;
             if (!loniccode) {
                 alert('請輸入監測項目');
@@ -212,7 +216,7 @@
                 alert('請輸入數值');
                 return;
             }
-            console.log('patientid'+patientid);
+            
             observationobj.subject.reference="Patient/"+patientid;
             observationobj.performer[0].reference="Patient/"+patientid;
             observationobj.effectiveDateTime = entrydate;
@@ -259,7 +263,10 @@
 
        }
        const requery= async () => {
-            
+        let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
+        if (patientid=undefined){
+             alert('沒有病患ID');
+        }
             let response = await getFHIRResource("Observation?subject="+patientid);
             if (response.data!=null){
                 let datas =response.data ;
@@ -273,7 +280,10 @@
             
         }
         const query= async () => {
-            
+            let patientid =   getQueryString()["patient"]; //在dd1004執行可以抓到, 但到了swr1004卻抓不到, 要重抓
+        if (patientid=undefined){
+             alert('沒有病患ID');
+        }
                 let response = await getFHIRResource("Observation?subject="+patientid);
                 if (response.data!=null){
                     let datas =response.data ;
