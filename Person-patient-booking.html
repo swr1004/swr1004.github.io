@@ -199,11 +199,11 @@
                 let data = datas[i];
                 let status = data.status;
                 let name = await getPractitioner(data.resource.participant[0].actor.reference);
-                console.log(name);
+                //console.log(name);
                 html += `
                     <tr>
                         <td>${data.resource.actualPeriod.start}</td>
-                        <td>`+name+`</td>
+                        <td>${ await getPractitioner(data.resource.participant[0].actor.reference)}</td>
                         <td>${getStatusText(data.resource.status)}</td>
                         
                     </tr>
@@ -215,7 +215,7 @@
             html += `
                     <tr>
                         <td>${datas.resource.actualPeriod.start}</td>
-                        <td>`+name+`</td>
+                        <td>${ await getPractitioner(datas.resource.participant[0].actor.reference)}</td>
                         <td>${getStatusText(datas.resource.status)}</td>
                     </tr>
                 `;
