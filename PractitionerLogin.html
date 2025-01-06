@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>醫護人員系統</title>
+    <title>醫護人員使用</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/custom.css">
     <style>
@@ -27,11 +27,11 @@
 <body>
     <div class="container">
 
-        <h1 class="mt-20 text-center">醫護人員系統</h1>
+        <h1 class="mt-20 text-center">醫護人員使用</h1>
         <div class="card">
             <div class="input-group">
-                <span>醫事證號</span>
-                <input type="text" class="form-control" id="id" name="id" placeholder="請輸入醫事證號" value="doctor01">
+                <span>id</span>
+                <input type="text" class="form-control" id="id" name="id" placeholder="請輸入 id" value="doctor01">
             </div>
             <div class="input-group">
                 <span>密碼</span>
@@ -43,7 +43,7 @@
             </div>
             <br/>
         <div class="text-center">
-            <a href="/registerPractitioner.html" class="btn-main">醫護人員註冊</a>
+            <a href="/registerPractitioner.html" class="btn-main">註冊</a>
         </div>
  
         </div>
@@ -68,7 +68,7 @@
             const password = document.getElementById('password').value;
 
             if (id == '' || password == '') {
-                alert('請輸入醫事證號及密碼');
+                alert('請輸入 id 及 密碼');
                 return;
             }
 
