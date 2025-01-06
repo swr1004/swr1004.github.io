@@ -377,6 +377,7 @@ const getEncounterDataByPractitionerAndStatus = async (status, id) => {
     };
 }
 
+//舊版
 const getEncountersByPractitioner = async (id) => {
     // 未報到
     const unknown = await getEncounterDataByPractitionerAndStatus("unknown", id).then((response) => {
@@ -406,6 +407,37 @@ const getEncountersByPractitioner = async (id) => {
         let patient = response2.success && response2.data ? response2.data : null;
         datas.push({
             id: encounter.id,
+            status: encounter.status,
+            name: patient ? patient.name[0].text : "查無此人",
+            note: "",
+        });
+    }
+
+    return {
+        success: true,
+        data: datas
+    };
+}
+
+//新版for 老師流程
+const getEncountersinprogress = async (id) => {
+
+
+    // 進行中
+    const progress = await getEncounterDataByPractitionerAndStatus("in-progress", id).then((response) => {
+        return response.success ? response.data : [];
+    });
+
+
+    const encounters = progress;
+    let datas = [];
+    for (let i in encounters) {
+        let encounter = encounters[i];
+        let response2 = await getPatientById(encounter.patientId);
+        let patient = response2.success && response2.data ? response2.data : null;
+        datas.push({
+            id: encounter.id,
+            patientid: encounter.patientId,
             status: encounter.status,
             name: patient ? patient.name[0].text : "查無此人",
             note: "",
