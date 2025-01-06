@@ -71,6 +71,7 @@
                         <thead>
                             <tr>
                                 <th>授權日期</th>
+                                <th>醫生</th>
                                 <th>狀態</th>
                             </tr>
                         </thead>
@@ -161,7 +162,16 @@
            
         }
 
-      
+        const getPractitioner = async (url) => {
+            let id = url.split('/')[1];
+            let response = await getFHIRResource("Practitioner/"+id);
+            if (response.success){
+                let datas =response.data ;
+                return datas.name;
+
+            }
+            return '';
+        }
 
         const setData = (datas) => {
             const tbody = document.getElementById('tbody');
@@ -186,6 +196,7 @@
                 html += `
                     <tr>
                         <td>${data.resource.actualPeriod.start}</td>
+                        <td>${getPractitioner(data.resource.participant[0].actor.reference)}</td>
                         <td>${getStatusText(data.resource.status)}</td>
                         
                     </tr>
@@ -195,6 +206,7 @@
             html += `
                     <tr>
                         <td>${datas.resource.actualPeriod.start}</td>
+                        <td>${getPractitioner(datas.resource.participant[0].actor.reference)}</td>
                         <td>${getStatusText(datas.resource.status)}</td>
                     </tr>
                 `;
