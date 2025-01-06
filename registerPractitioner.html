@@ -78,14 +78,14 @@
                                     placeholder="輸入醫護證號" style="width: 30%;" value="TCU001">
                              </div>
                              <hr />  
-                             <div id="person-role" class="">
+                             <!--<div id="person-role" class="">
                                 <label for="input-role">角色</label> 
                                 <select id="input-role">
                                     <option value="doctor" selected>Doctor</option>
                                     <option value="nurse">nurse</option>
                                     <option value="others">others</option>
                                 </select>
-                             </div>
+                             </div>-->
                              <hr />  
                              <div id="person-password1" class=" ">
                                 <label for="input-password1">密碼 1</label>
@@ -161,11 +161,11 @@
                 alert('請輸入醫護證號');
                 return;
             }
-            let role = document.getElementById('input-role').value;
-            if (!role) {
-                alert('請選擇角色');
-                return;
-            }
+            //let role = document.getElementById('input-role').value;
+            //if (!role) {
+            //    alert('請選擇角色');
+            //    return;
+            //}
             let gender = document.querySelector('input[name="gender"]:checked').value; 
             if (!gender) {
                 alert('請選擇性別');
@@ -207,7 +207,7 @@
             
             practitionerJSONobj.identifier[0].value= email;
             practitionerJSONobj.identifier[1].value= sha256(password1);
-            practitionerJSONobj.identifier[2].value= role;
+            //practitionerJSONobj.identifier[2].value= role;
             practitionerJSONobj.name[0].text = name;
             practitionerJSONobj.gender = gender;
             practitionerJSONobj.birthDate = birthday;
