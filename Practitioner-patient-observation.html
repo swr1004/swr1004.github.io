@@ -108,7 +108,6 @@
         let patientid = '';
         let patientname = '';
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById("entrydate").value = toLocalISOString(new Date());
             patientid =   getQueryString()["patient"];
             patientname =   getQueryString()["name"];
             
