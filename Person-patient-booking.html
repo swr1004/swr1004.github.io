@@ -166,11 +166,11 @@
             console.log('getPractitioner 1 '+url);
             let id = url.split('/')[1];
             let response = await getFHIRResourceById("Practitioner/"+id);
-            console.log('getPractitioner  '+response.success);
+           // console.log('getPractitioner  '+response.success);
             if (response.success){
                 let datas =response.data ;
-                console.log(datas);
-                console.log(datas.name[0].text);
+                //console.log(datas);
+                //console.log(datas.name[0].text);
                 return datas.name[0].text;
 
             }
@@ -198,20 +198,22 @@
             for (let i in datas) {
                 let data = datas[i];
                 let status = data.status;
+                let name = getPractitioner(data.resource.participant[0].actor.reference);
                 html += `
                     <tr>
                         <td>${data.resource.actualPeriod.start}</td>
-                        <td>${getPractitioner(data.resource.participant[0].actor.reference)}</td>
+                        <td>${name}</td>
                         <td>${getStatusText(data.resource.status)}</td>
                         
                     </tr>
                 `;
             };
            }else{
+            let name = getPractitioner(datas.resource.participant[0].actor.reference);
             html += `
                     <tr>
                         <td>${datas.resource.actualPeriod.start}</td>
-                        <td>${getPractitioner(datas.resource.participant[0].actor.reference)}</td>
+                        <td>${name}</td>
                         <td>${getStatusText(datas.resource.status)}</td>
                     </tr>
                 `;
