@@ -167,6 +167,7 @@
             let response = await getFHIRResource("Practitioner/"+id);
             if (response.success){
                 let datas =response.data ;
+                console.log(datas);
                 return datas.name;
 
             }
