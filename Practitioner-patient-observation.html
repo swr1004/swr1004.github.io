@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>醫師查看</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        .unknown {
+            background-color: #b2b1b1;
+            color: white;
+            cursor: auto;
+        }
+
+        .unknown:hover {
+            background-color: #b2b1b1;
+            color: white;
+        }
+
+        .planned {
+            background-color: #F0BE5D;
+            color: white;
+            cursor: auto;
+        }
+
+        .planned:hover {
+            background-color: #F0BE5D;
+            color: white;
+        }
+
+        .in-progress {
+            background-color: #1b79b4;
+            color: white;
+            cursor: auto;
+        }
+
+        .in-progress:hover {
+            background-color: #1b79b4;
+            color: white;
+        }
+
+        .completed {
+            background-color: #39c056;
+            color: white;
+            cursor: auto;
+        }
+
+        .completed:hover {
+            background-color: #39c056;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-header">
+            <div class="header-left">
+                <a href="/patient-login.html">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <div class="title">上傳監測資料</div>
+            </div>
+            <div class="header-right">
+                <li>
+                    <a href="/Practitioner-waiting.html">授權清單</a>
+                </li>
+
+
+
+                <li>
+                    <a href="javascript:logout();">登出</a>
+                </li>
+            </div>
+        </div>
+
+        </div>
+
+           
+            <hr/>
+            <div class="mt-15">
+                <div style="overflow-x: auto;">
+                    <div>查看<span id="patient-name"></span></div>
+                    <table class="table table-bordered" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th>code</th>
+                                <th>value</th>
+                                <th>Unit</th>
+                                <th>Status</th>
+                                <th>Issued Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        let patientid = '';
+        let patientname = '';
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById("entrydate").value = toLocalISOString(new Date());
+            patientid =   getQueryString()["patient"];
+            patientname =   getQueryString()["name"];
+            
+            const login = checkLogin();
+            if (login ){
+                if (patientid==undefined){
+                    window.location.href = 'Practitioner-waiting.html';
+                }
+                document.getElementById('patient-name').innerText = patientname;
+                    query();
+            }else{
+                window.location.href = 'PractitionerLogin.html';
+            }
+            
+        });
+
+        const changeunit = () => {
+            let type = document.getElementById('loniccode').value;
+            //console.log('   1   '  +type);
+            if (type==undefined){
+                document.getElementById('unit').textContent  = '';
+            }else if(type=='8480-6'){
+                document.getElementById('unit').textContent  = 'mmHg';
+            }else if(type=='8302-2'){
+                document.getElementById('unit').textContent  = 'cm';
+            }else if(type=='29463-7'){
+                document.getElementById('unit').textContent  = 'kg';
+            }else if(type=='8310-5'){
+                document.getElementById('unit').textContent  = 'Cel';
+            }else if(type=='8867-4'){
+                //console.log('   2   '  );
+                document.getElementById('unit').textContent  = 'beats/min';
+            }else{
+                
+                //console.log('   3   '  );
+                document.getElementById('unit').textContent  = '';
+            }
+            
+        }
+        
+
+
+        const getQueryString= () => {
+            var result = {}, queryString = location.search.slice(1),
+            re = /([^&=]+)=([^&]*)/g, m;
+            while (m = re.exec(queryString)) {
+                ///console.log(decodeURIComponent(m[1])+'-'+decodeURIComponent(m[2]));
+                result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            }
+            return result;
+        }
+
+
+
+        const query= async () => {
+          //  console.log('query'+patientid);
+            
+                let response = await getFHIRResource("Observation?subject="+patientid);
+                if (response.data!=null){
+                    let datas =response.data ;
+                if (Array.isArray(response.data)){
+                   datas.sort((a, b) => {
+                        return a.id - b.id;
+                   });
+                }
+                setData(datas);
+                }
+                
+            }
+           
+        
+       
+
+        const setData = (datas) => {
+            const tbody = document.getElementById('tbody');
+            let html = '';
+            // 未報到(unknown)、已報到(planned)、看診中(in-progress)、已完成(completed)
+           /*
+            Array.prototype.forEach.call(datas, data => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.id}</td>
+                        <td>${data.name}</td>
+                        
+                    </tr>
+                `;
+            });
+            */
+            console.log(datas);
+           
+           if (Array.isArray(datas)){
+            datas.forEach((data) => {
+                let status = data.status;
+                html += `
+                    <tr>
+                        <td>${data.resource.code.coding[0].text}</td>
+                        <td>${data.resource.valueQuantity.value}</td>
+                        <td>${data.resource.valueQuantity.unit}</td>
+                        <td>${data.resource.status}</td>
+                        <td>${data.resource.effectiveDateTime}</td>
+                        
+                    </tr>
+                `;
+            });
+           }else{
+            html += `
+                    <tr>
+                         <td>${datas.resource.code.coding[0].text}</td>
+                        <td>${datas.resource.valueQuantity.value}</td>
+                        <td>${datas.resource.valueQuantity.unit}</td>
+                        <td>${datas.resource.status}</td>
+                        <td>${datas.resource.effectiveDateTime}</td>
+                    </tr>
+                `;
+           }
+            //alert(html);
+            tbody.innerHTML = html;
+            
+        }
+
+        
+    </script>
+</body>
+
+</html>
