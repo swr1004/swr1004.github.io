@@ -82,8 +82,11 @@
                     <table class="table table-bordered" style="min-width: 700px;">
                         <thead>
                             <tr>
+                                <th>EMR ID</th>
                                 <th>PHR ID</th>
-                                <th>姓名</th>
+                                <th>Patient Name</th>
+                                <th>Action</th>
+                                <th>ConscentID</th>
                                 <th>查看授權資料</th>
                             </tr>
                         </thead>
@@ -130,16 +133,14 @@
                 html += `
                     <tr>
                         <td>${data.id}</td>
+                        <td>${data.patientid}</td>
                         <td>${data.name}</td>
                         <td>
-                            <div class="margin-auto btn-main small ${data.status}">${getStatusText(data.status)}</div>
+                            get vital signs
                         </td>
                         <td>${data.note}</td>
-                        <td>
-                            ${data.status === `planned` ? `<button class="btn-main small" onclick="doProgress(${data.id})">看診</button>` : ``}
-                            ${data.status === `in-progress` ? `<button class="btn-main small" style="max-width: 120px;" onclick="window.location.href='/uploadDRef.html?en=${data.id}';">上傳檢驗報告</button>` : ``}
-                            ${data.status === `in-progress` ? `<button class="btn-main small ml-8" style="max-width: 120px;" onclick="doComplete(${data.id})">看診完成</button>` : ``}
-                        </td>
+                        
+                        <td><a href=Person-patient-data.html?patient=${data.resource.id}&name=${data.resource.name[0].text}>查看資料</a></td>
                     </tr>
                 `;
             });
@@ -149,11 +150,11 @@
         const getStatusText = (status) => {
             switch (status) {
                 case 'unknown':
-                    return '未報到';
+                    return '授權中';
                 case 'planned':
-                    return '已報到';
+                    return '授權中';
                 case 'in-progress':
-                    return '看診中';
+                    return '授權中';
                 case 'completed':
                     return '已完成';
                 default:
