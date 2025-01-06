@@ -1045,7 +1045,7 @@ const getFHIRResource = async (resource) => {
 }
 //連到另一台FHIR SERFVER
 const getFHIR2Resource = async (resource) => {
-    const url = `${FHIR_BASE}/`+resource;
+    const url = `${FHIR_BASE2}/`+resource;
     API_HEADERS.Authorization = localStorage.getItem('token');
     const response = await useGet(url, API_HEADERS);
     return {
