@@ -191,7 +191,8 @@
             */
            
            if (Array.isArray(datas)){
-            datas.forEach((data) => {
+            for (let i in datas) {
+                let data = datas[i];
                 let status = data.status;
                 html += `
                     <tr>
@@ -201,7 +202,7 @@
                         
                     </tr>
                 `;
-            });
+            };
            }else{
             html += `
                     <tr>
