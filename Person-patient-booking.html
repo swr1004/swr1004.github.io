@@ -168,7 +168,7 @@
             if (response.success){
                 let datas =response.data ;
                 console.log(datas);
-                return datas.name;
+                return datas.name[0].text;
 
             }
             return '';
