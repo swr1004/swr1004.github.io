@@ -198,7 +198,7 @@
                 let status = data.status;
                 html += `
                     <tr>
-                        <td>${data.resource.code.coding[0].text}</td>
+                        <td>${data.resource.code.coding[0].code}</td>
                         <td>${data.resource.valueQuantity.value}</td>
                         <td>${data.resource.valueQuantity.unit}</td>
                         <td>${data.resource.status}</td>
@@ -210,7 +210,7 @@
            }else{
             html += `
                     <tr>
-                         <td>${datas.resource.code.coding[0].text}</td>
+                         <td>${datas.resource.code.coding[0].code}</td>
                         <td>${datas.resource.valueQuantity.value}</td>
                         <td>${datas.resource.valueQuantity.unit}</td>
                         <td>${datas.resource.status}</td>
