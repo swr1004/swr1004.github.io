@@ -199,6 +199,7 @@
                 let data = datas[i];
                 let status = data.status;
                 let name = getPractitioner(data.resource.participant[0].actor.reference);
+                console.log(name);
                 html += `
                     <tr>
                         <td>${data.resource.actualPeriod.start}</td>
@@ -210,6 +211,7 @@
             };
            }else{
             let name = getPractitioner(datas.resource.participant[0].actor.reference);
+            console.log(name);
             html += `
                     <tr>
                         <td>${datas.resource.actualPeriod.start}</td>
