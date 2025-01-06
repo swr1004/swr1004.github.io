@@ -57,14 +57,7 @@ let personJSONobj = {
 		"identifier": [
 			{
 				"system": "UserID",
-				"value": "",
-                "use" : "official",
-                "type" : {
-                    "coding" : [{
-                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
-                        "code" : "NNxxx"
-                    }]
-                },
+				"value": ""
 			},
 			{
 				"system": "Password",
@@ -73,7 +66,15 @@ let personJSONobj = {
 			{
 				"system": "role",
 				"value": ""
-			}
+			},{
+                "use" : "official",
+                "type" : {
+                    "coding" : [{
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
+                        "code" : "NNxxx"
+                    }]
+                },
+            }
 		],
 		"gender": "",
 		"name": [ {
