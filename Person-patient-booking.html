@@ -133,7 +133,7 @@
             encounterJSONobj.actualPeriod.start= period;
             encounterJSONobj.identifier[0].value="Patient";
             encounterJSONobj.participant[0].actor.reference = "Practitioner/"+practitioner;
-          
+            encounterJSONobj.status = 'in-progress';
              
             let response = await createFHIRResource("Encounter", encounterJSONobj);
             if (!response.success) {
@@ -186,7 +186,7 @@
                 html += `
                     <tr>
                         <td>${data.resource.actualPeriod.start}</td>
-                        <td>${data.resource.status}</td>
+                        <td>${getStatusText(data.resource.status)}</td>
                         
                     </tr>
                 `;
@@ -195,14 +195,27 @@
             html += `
                     <tr>
                         <td>${datas.resource.actualPeriod.start}</td>
-                        <td>${datas.resource.status}</td>
+                        <td>${getStatusText(datas.resource.status)}</td>
                     </tr>
                 `;
            }
             //alert(html);
             tbody.innerHTML = html;
         }
-
+        const getStatusText = (status) => {
+            switch (status) {
+                case 'unknown':
+                    return '已授權';
+                case 'planned':
+                    return '已授權';
+                case 'in-progress':
+                    return '已授權';
+                case 'completed':
+                    return '已完成';
+                default:
+                    return '';
+            }
+        }
         const fillDataList= async () => {
             let response = await getFHIRResource("Practitioner?identifier=doctor");
             var container = document.getElementById('practitioner'),

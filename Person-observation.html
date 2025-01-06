@@ -62,7 +62,7 @@
                 <a href="/patient-login.html">
                     <img src="/img/logo.png" alt="logo" class="logo">
                 </a>
-                <div class="title">FHIR Repository-上傳Patient</div>
+                <div class="title">上傳監測資料</div>
             </div>
             <div class="header-right">
                 <li>
@@ -350,7 +350,7 @@
                         <td>${datas.resource.effectiveDateTime}</td>
                         <td>${datas.resource.code.text}</td>
                         <td>${datas.resource.valueQuantity.valuey}</td>
-                        <td>${data.resource.valueQuantity.value}</td>
+                        <td>${datas.resource.valueQuantity.value}</td>
                         <td><button class="btn-main" onclick="upload('${datas.resource.id}');">上傳</button></td>
                     </tr>
                 `;
