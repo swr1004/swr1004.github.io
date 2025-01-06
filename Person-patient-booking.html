@@ -165,7 +165,7 @@
         const getPractitioner = async (url) => {
     //console.log('getPractitioner 1 '+url);
     let id = url.split('/')[1];
-    let response = await getEncountersinprogress("Practitioner/"+id);
+    let response = await getFHIRResourceById("Practitioner/"+id);
    // console.log('getPractitioner  '+response.success);
     if (response.success){
         let datas =response.data ;

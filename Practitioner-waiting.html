@@ -115,7 +115,7 @@
         }
 
         const getData = async () => {
-            let response = await getEncountersByPractitioner(practitioner.id);
+            let response = await getEncountersinprogress(practitioner.id);
             let datas = response.success ? response.data : [];
             datas.sort((a, b) => {
                 return a.id - b.id;
