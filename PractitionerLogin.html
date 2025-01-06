@@ -60,7 +60,7 @@
                 const practitioner = JSON.parse(localStorage.getItem('practitioner'));
                 const role = localStorage.getItem('login-role');
                 if (id && practitioner && role == 'practitioner') {
-                    window.location.href = '/waiting.html';
+                    window.location.href = '/Practitioner-waiting.html';
                 }
             } catch (e) { }
         });
@@ -101,7 +101,7 @@
             localStorage.setItem('login-id', practitioner.id);
 
             alert('登入成功！');
-            window.location.href = '/waiting.html';
+            window.location.href = '/Practitioner-waiting.html';
         }
     </script>
 </body>

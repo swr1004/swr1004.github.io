@@ -198,7 +198,7 @@
             for (let i in datas) {
                 let data = datas[i];
                 let status = data.status;
-                let name = await getPractitioner(data.resource.participant[0].actor.reference);
+               // let name = await getPractitioner(data.resource.participant[0].actor.reference);
                 //console.log(name);
                 html += `
                     <tr>
@@ -210,7 +210,7 @@
                 `;
             };
            }else{
-            let name = await getPractitioner(datas.resource.participant[0].actor.reference);
+           // let name = await getPractitioner(datas.resource.participant[0].actor.reference);
             console.log(name);
             html += `
                     <tr>
