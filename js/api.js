@@ -1035,6 +1035,17 @@ const getFHIRResource = async (resource) => {
     };
     
 }
+//連到另一台FHIR SERFVER
+const getFHIR2Resource = async (resource) => {
+    const url = `${FHIR_BASE}/`+resource;
+    API_HEADERS.Authorization = localStorage.getItem('token');
+    const response = await useGet(url, API_HEADERS);
+    return {
+        success: response ? response.total > 0 : false,
+        data: response ? response.entry.length > 0 ? response.entry : null : null
+    };
+    
+}
 
 
 //用reponse.entry 如果沒有查到資料不會回傳entry node

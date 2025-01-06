@@ -166,7 +166,7 @@
         const query= async () => {
           //  console.log('query'+patientid);
             
-                let response = await getFHIRResource("Observation?subject="+patientid);
+                let response = await getFHIR2Resource("Observation?subject="+patientid);
                 if (response.data!=null){
                     let datas =response.data ;
                 if (Array.isArray(response.data)){
